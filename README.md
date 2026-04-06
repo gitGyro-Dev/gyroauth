@@ -121,3 +121,18 @@ DOI: https://doi.org/10.5281/zenodo.19433740
 Authentication is no longer about secrets.
 
 > **Authentication is the convergence of existence in space-time**
+
+---
+
+## 🤝 Collaboration / Inquiry
+
+Interested in applying GyroAuth or GyroLogic?
+
+We are open for:
+
+- PoC design
+- Architecture consulting
+- Licensing discussions
+
+👉 Please open an issue:
+https://github.com/gitGyro-Dev/gyroauth/issues

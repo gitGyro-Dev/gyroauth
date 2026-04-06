@@ -18,6 +18,22 @@ Instead of verifying *what you know*, GyroAuth verifies:
 
 ---
 
+## 🧠 About GyroLogic
+
+GyroAuth is derived from the GyroLogic framework.
+
+GyroLogic introduces a new paradigm:
+
+👉 Truth = Stability-weighted projection  
+👉 Meaning = Stabilized behavior  
+👉 Inference = Dynamic convergence  
+
+See the full theory:
+
+https://github.com/gitGyro-Dev/gyroos
+
+
+
 ## 🔗 Relationship to GyroLogic
 
 GyroAuth is a **spin-off application** of the broader theoretical framework:

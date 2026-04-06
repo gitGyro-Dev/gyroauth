@@ -18,6 +18,10 @@ Instead of verifying *what you know*, GyroAuth verifies:
 
 ---
 
+## 📊 Concept
+
+![GyroAuth Concept](./docs/diagram1.png)
+
 ## 🧠 About GyroLogic
 
 GyroAuth is derived from the GyroLogic framework.

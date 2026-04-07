@@ -2,6 +2,8 @@
 # GyroAuth  
 **A GyroLogic Spin-off Project**
 
+Security = Non-reproducibility of state
+
 ---
 
 ## 🧭 Overview

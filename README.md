@@ -79,6 +79,28 @@ Even if an attacker reproduces one moment:
 
 ---
 
+## 📡 Multi-Device Correlation
+
+Authentication is not just identity.
+
+It is **co-location**.
+
+![Multi Device](./docs/diagram5.png)
+
+### Key Insight
+
+> Authentication requires physical proximity.
+
+### Why it matters
+
+- Remote attacks fail by default  
+- Devices must exist in the same space  
+
+Even if credentials are stolen:
+
+→ authentication fails without physical presence
+
+---
 
 ## 🧠 About GyroLogic
 

@@ -53,6 +53,33 @@ Why It’s Unbreachable:
 
 ---
 
+---
+
+## 🧭 Trajectory Authentication
+
+Authentication is not a single point in time.
+
+It is a **sequence of states over time**.
+
+![Trajectory Authentication](./docs/diagram3.png)
+
+### Why it matters
+
+- A single state can be imitated  
+- A trajectory requires **temporal consistency**  
+
+Even if an attacker reproduces one moment:
+
+→ They cannot reproduce the **entire path**
+
+### Key Idea
+
+> **Identity is not a state.  
+> It is a trajectory.**
+
+---
+
+
 ## 🧠 About GyroLogic
 
 GyroAuth is derived from the GyroLogic framework.

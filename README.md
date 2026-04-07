@@ -1,3 +1,4 @@
+
 # GyroAuth  
 **A GyroLogic Spin-off Project**
 
@@ -22,27 +23,28 @@ Instead of verifying *what you know*, GyroAuth verifies:
 
 ![GyroAuth Concept](./docs/diagram1.png)
 
+---
+
 ## 🧠 About GyroLogic
 
 GyroAuth is derived from the GyroLogic framework.
 
 GyroLogic introduces a new paradigm:
 
-👉 Truth = Stability-weighted projection  
-👉 Meaning = Stabilized behavior  
-👉 Inference = Dynamic convergence  
+- Truth = Stability-weighted projection  
+- Meaning = Stabilized behavior  
+- Inference = Dynamic convergence  
 
-See the full theory:
-
+See the full theory:  
 https://github.com/gitGyro-Dev/gyroos
 
-
+---
 
 ## 🔗 Relationship to GyroLogic
 
 GyroAuth is a **spin-off application** of the broader theoretical framework:
 
-👉 https://github.com/gitGyro-Dev/gyroos  
+https://github.com/gitGyro-Dev/gyroos  
 
 GyroLogic defines truth and evaluation as:
 
@@ -71,19 +73,44 @@ V_gyro(t) = Π · R(K, T) · Φ(S, M)
 
 ## 🔐 Key Properties
 
-- Replay-resistant
-- Phishing-resistant
-- Non-transferable
-- Physically constrained authentication
+- Replay-resistant  
+- Phishing-resistant  
+- Non-transferable  
+- Physically constrained authentication  
+
+---
+
+## 🧩 Extended Concepts (Engineering Layer)
+
+GyroAuth extends into practical system design through:
+
+### ⏱ Dynamic Time Decay
+Authentication validity rapidly decays over time.
+
+→ Replay attacks become ineffective within sub-second windows.
+
+---
+
+### 📡 Multi-Device Correlation
+Authentication depends on **relative proximity between devices**.
+
+→ Example: PC + smartphone must exist in the same physical environment.
+
+---
+
+### 📱 Intentional Gesture Input
+Authentication includes **physical device state during input**.
+
+→ Password + motion/angle = dynamic authentication condition.
 
 ---
 
 ## 🚀 Use Cases
 
-- Financial transactions
-- Data center operations
-- Critical infrastructure
-- Medical systems
+- Financial transactions  
+- Data center operations  
+- Critical infrastructure  
+- Medical systems  
 
 ---
 
@@ -91,13 +118,30 @@ V_gyro(t) = Π · R(K, T) · Φ(S, M)
 
 This repository contains:
 
-- Concept definition
-- Mathematical model
-- Architecture design
-- PoC design
+- Concept definition  
+- Mathematical model  
+- Architecture design  
+- PoC design  
+- Engineering extensions  
 
 ⚠️ This is NOT a production SDK  
 This is a **protocol and design layer**
+
+---
+
+## 📂 Documentation
+
+- Theory Note → ./docs/theory-note.md  
+- Authentication Region (Ω) → ./docs/omega.md  
+- Non-Reproducibility → ./docs/non-reproducibility.md  
+- Trajectory → ./docs/trajectory.md  
+- Scoring → ./docs/scoring.md  
+
+### Engineering
+
+- Time Decay → ./docs/time-decay.md  
+- Multi-Device → ./docs/multi-device-correlation.md  
+- Gesture → ./docs/intentional-gesture.md  
 
 ---
 
@@ -113,10 +157,8 @@ Commercial usage, implementation, or licensing:
 
 ## 📌 Citation
 
-DOI: https://doi.org/10.5281/zenodo.19428071
-
-
-DOI: https://doi.org/10.5281/zenodo.19433740
+DOI: https://doi.org/10.5281/zenodo.19428071  
+DOI: https://doi.org/10.5281/zenodo.19433740  
 
 ---
 
@@ -134,9 +176,9 @@ Interested in applying GyroAuth or GyroLogic?
 
 We are open for:
 
-- PoC design
-- Architecture consulting
-- Licensing discussions
+- PoC design  
+- Architecture consulting  
+- Licensing discussions  
 
-👉 Please open an issue:
+👉 Please open an issue:  
 https://github.com/gitGyro-Dev/gyroauth/issues

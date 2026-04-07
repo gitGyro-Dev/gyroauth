@@ -46,9 +46,9 @@ GyroAuth creates a "Space-Time Wall" that physically and logically blocks unauth
 
 Why It’s Unbreachable:
 
-Spatial Mismatch: A hacker in a different location cannot fulfill the spatial requirement ($S$).
-Temporal Mismatch: Because time ($T$) is a primary variable, stolen data expires in sub-seconds.
-Behavioral Mismatch: The unique "habit" of your device movement ($M$) adds a biometric layer of physics.
+- Spatial Mismatch: A hacker in a different location cannot fulfill the spatial requirement ($S$).
+- Temporal Mismatch: Because time ($T$) is a primary variable, stolen data expires in sub-seconds.
+- Behavioral Mismatch: The unique "habit" of your device movement ($M$) adds a biometric layer of physics.
 
 
 ---

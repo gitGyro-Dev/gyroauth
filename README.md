@@ -21,9 +21,35 @@ Instead of verifying *what you know*, GyroAuth verifies:
 
 ---
 
-## 📊 Concept
+## 📊 Concept: From "Point" to "Dimension"
+
+Traditional authentication relies on a static "point" (a password string). GyroAuth transforms this into a dynamic coordinate in multi-dimensional space.
 
 ![GyroAuth Concept](./docs/diagram1.png)
+
+Multi-Dimensional Password Rotation
+
+In GyroAuth, your password ($K$) is not just a secret string; it acts as a Rotation Matrix $R(K)$.
+The ambient environment data—Space ($S$), Time ($T$), and Motion ($M$)—are projected and rotated by your password to generate a unique, one-time authentication vector $V_{auth}$.
+
+$$V_{auth} = R(K) \cdot \Phi(S, T, M)$$
+
+Even if an attacker steals $K$, they cannot generate the correct $V_{auth}$ without being in your exact "Space-Time-Motion" coordinate.
+
+---
+
+## 🛡️ The Moment of Defense
+
+GyroAuth creates a "Space-Time Wall" that physically and logically blocks unauthorized access, even with valid credentials.
+
+![Moment of Defense](./docs/diagram2.png)
+
+Why It’s Unbreachable:
+
+Spatial Mismatch: A hacker in a different location cannot fulfill the spatial requirement ($S$).
+Temporal Mismatch: Because time ($T$) is a primary variable, stolen data expires in sub-seconds.
+Behavioral Mismatch: The unique "habit" of your device movement ($M$) adds a biometric layer of physics.
+
 
 ---
 

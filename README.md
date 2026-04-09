@@ -1,261 +1,153 @@
+# GyroAuth
 
-# GyroAuth  
-**A GyroLogic Spin-off Project**
-
-Security = Non-reproducibility of state
-
----
-
-## 🧭 Overview
-
-GyroAuth is a next-generation authentication concept that redefines identity verification as **multi-dimensional state convergence** across:
-
-- Space (Location)
-- Time
-- Motion (Device behavior)
-- Device-bound cryptographic identity
-
-Instead of verifying *what you know*, GyroAuth verifies:
-
-> **Where you are, when you are, and how you exist in that moment**
+**Authentication is not a point.  
+It is convergence.**
 
 ---
 
-## 📊 Concept: From "Point" to "Dimension"
+## 🚨 The Problem
 
-Traditional authentication relies on a static "point" (a password string). GyroAuth transforms this into a dynamic coordinate in multi-dimensional space.
+Current authentication systems are fundamentally broken.
 
-![GyroAuth Concept](./docs/diagram1.png)
+- Passwords can be stolen  
+- Tokens can be replayed  
+- Sessions can be hijacked  
+- Identity is treated as static  
 
-Multi-Dimensional Password Rotation
+Authentication today verifies a single moment.
 
-In GyroAuth, your password ($K$) is not just a secret string; it acts as a Rotation Matrix $R(K)$.
-The ambient environment data—Space ($S$), Time ($T$), and Motion ($M$)—are projected and rotated by your password to generate a unique, one-time authentication vector $V_{auth}$.
-
-$$V_{auth} = R(K) \cdot \Phi(S, T, M)$$
-
-Even if an attacker steals $K$, they cannot generate the correct $V_{auth}$ without being in your exact "Space-Time-Motion" coordinate.
+That is the core weakness.
 
 ---
 
-## 🛡️ The Moment of Defense
+## 💡 The Solution
 
-GyroAuth creates a "Space-Time Wall" that physically and logically blocks unauthorized access, even with valid credentials.
+GyroAuth introduces a new definition:
 
-![Moment of Defense](./docs/diagram2.png)
+> **Authentication = State Convergence**
 
-Why It’s Unbreachable:
+Instead of verifying a static credential,  
+GyroAuth verifies whether your **state continuously converges**.
 
-- Spatial Mismatch: A hacker in a different location cannot fulfill the spatial requirement ($S$).
-- Temporal Mismatch: Because time ($T$) is a primary variable, stolen data expires in sub-seconds.
-- Behavioral Mismatch: The unique "habit" of your device movement ($M$) adds a biometric layer of physics.
+---
+
+## 🔑 Concept
+
+### From Point to Trajectory
+
+![Point vs Trajectory](./docs/fig1_trajectory.png)
+
+A point can be copied.  
+A trajectory cannot.
+
+---
+
+### State Convergence
+
+![State Convergence](./docs/fig2_convergence.png)
+
+Authentication is not a snapshot.
+
+It is the process of multiple states converging into a stable identity.
+
+---
+
+### Time Decay
+
+![Time Decay](./docs/fig3_timedecay.png)
+
+Authentication decays over time.
+
+Stolen data becomes useless.
+
+---
+
+## 🔒 Why It Works
+
+GyroAuth removes the fundamental weakness of authentication:
+
+> **Transferability**
+
+Traditional authentication can be copied.  
+GyroAuth cannot — because it depends on **live convergence over time**.
+
+---
+
+## 🧩 Use Cases
+
+### Financial Systems
+- Fraud-resistant authentication  
+- Protection against phishing & replay attacks  
+- Continuous transaction validation  
+
+---
+
+### IoT / Physical Access
+- Smart home / smart lock  
+- Vehicle authentication  
+- Industrial systems  
+
+---
+
+### AI / Autonomous Systems
+- Behavior-based authentication  
+- API misuse detection  
+- Agent identity verification  
+
+---
+
+### Enterprise Security
+- Zero-trust environments  
+- Continuous authentication  
+- Session integrity protection  
+
+---
+
+## ⚙️ What This Repository Contains
+
+- Concept definitions  
+- Authentication models  
+- Architecture ideas  
+- Early PoC structures  
+
+---
+
+## 🚀 What We Are Exploring
+
+- Proof of Concept (PoC) development  
+- Security architecture consulting  
+- Licensing opportunities  
+
+---
+
+## 📌 Status
+Concept → Structure → Early Implementation
 
 
 ---
 
----
+## 🧭 Vision
 
-## 🧭 Trajectory Authentication
+Authentication should not verify who you claim to be.
 
-Authentication is not a single point in time.
+It should verify:
 
-It is a **sequence of states over time**.
-
-![Trajectory Authentication](./docs/diagram3.png)
-
-### Why it matters
-
-- A single state can be imitated  
-- A trajectory requires **temporal consistency**  
-
-Even if an attacker reproduces one moment:
-
-→ They cannot reproduce the **entire path**
-
-### Key Idea
-
-> **Identity is not a state.  
-> It is a trajectory.**
+> **Whether you are continuously behaving as yourself.**
 
 ---
 
-## 📡 Multi-Device Correlation
+## 🤝 Collaboration
 
-Authentication is not just identity.
+If you are interested in:
 
-It is **co-location**.
+- PoC collaboration  
+- Security architecture  
+- Commercial applications  
 
-![Multi Device](./docs/diagram5.png)
-
-### Key Insight
-
-> Authentication requires physical proximity.
-
-### Why it matters
-
-- Remote attacks fail by default  
-- Devices must exist in the same space  
-
-Even if credentials are stolen:
-
-→ authentication fails without physical presence
+Please reach out via GitHub issues or discussions.
 
 ---
 
-## 🧠 About GyroLogic
+# GyroAuth
 
-GyroAuth is derived from the GyroLogic framework.
-
-GyroLogic introduces a new paradigm:
-
-- Truth = Stability-weighted projection  
-- Meaning = Stabilized behavior  
-- Inference = Dynamic convergence  
-
-See the full theory:  
-https://github.com/gitGyro-Dev/gyroos
-
----
-
-## 🔗 Relationship to GyroLogic
-
-GyroAuth is a **spin-off application** of the broader theoretical framework:
-
-https://github.com/gitGyro-Dev/gyroos  
-
-GyroLogic defines truth and evaluation as:
-
-> **Observer-dependent convergence in a multi-dimensional space**
-
-GyroAuth applies this concept to authentication:
-
-- Traditional authentication → **static equality**
-- GyroAuth → **dynamic state convergence**
-
----
-
-## 🧠 Core Concept
-
-Authentication is defined as:
-
-Auth = Match( V_gyro(t), V_gyro_expected )
-
----
-
-## 🧮 Core Model
-
-V_gyro(t) = Π · R(K, T) · Φ(S, M)
-
----
-
-## 🔐 Key Properties
-
-- Replay-resistant  
-- Phishing-resistant  
-- Non-transferable  
-- Physically constrained authentication  
-
----
-
-## 🧩 Extended Concepts (Engineering Layer)
-
-GyroAuth extends into practical system design through:
-
-### ⏱ Dynamic Time Decay
-Authentication validity rapidly decays over time.
-
-→ Replay attacks become ineffective within sub-second windows.
-
----
-
-### 📡 Multi-Device Correlation
-Authentication depends on **relative proximity between devices**.
-
-→ Example: PC + smartphone must exist in the same physical environment.
-
----
-
-### 📱 Intentional Gesture Input
-Authentication includes **physical device state during input**.
-
-→ Password + motion/angle = dynamic authentication condition.
-
----
-
-## 🚀 Use Cases
-
-- Financial transactions  
-- Data center operations  
-- Critical infrastructure  
-- Medical systems  
-
----
-
-## 🧪 Project Scope
-
-This repository contains:
-
-- Concept definition  
-- Mathematical model  
-- Architecture design  
-- PoC design  
-- Engineering extensions  
-
-⚠️ This is NOT a production SDK  
-This is a **protocol and design layer**
-
----
-
-## 📂 Documentation
-
-- Theory Note → ./docs/theory-note.md  
-- Authentication Region (Ω) → ./docs/omega.md  
-- Non-Reproducibility → ./docs/non-reproducibility.md  
-- Trajectory → ./docs/trajectory.md  
-- Scoring → ./docs/scoring.md  
-
-### Engineering
-
-- Time Decay → ./docs/time-decay.md  
-- Multi-Device → ./docs/multi-device-correlation.md  
-- Gesture → ./docs/intentional-gesture.md  
-
----
-
-## 📜 License & Usage
-
-This repository publicly discloses the concept and architecture.
-
-Commercial usage, implementation, or licensing:
-
-👉 Requires separate agreement
-
----
-
-## 📌 Citation
-
-DOI: https://doi.org/10.5281/zenodo.19428071  
-DOI: https://doi.org/10.5281/zenodo.19433740  
-
----
-
-## 🌐 Vision
-
-Authentication is no longer about secrets.
-
-> **Authentication is the convergence of existence in space-time**
-
----
-
-## 🤝 Collaboration / Inquiry
-
-Interested in applying GyroAuth or GyroLogic?
-
-We are open for:
-
-- PoC design  
-- Architecture consulting  
-- Licensing discussions  
-
-👉 Please open an issue:  
-https://github.com/gitGyro-Dev/gyroauth/issues
+**Authentication as dynamic convergence in behavior space.**

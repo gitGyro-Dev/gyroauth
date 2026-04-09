@@ -35,7 +35,7 @@ GyroAuth verifies whether your **state continuously converges**.
 
 ### From Point to Trajectory
 
-![Point vs Trajectory](./docs/fig1_trajectory.png)
+![Point vs Trajectory](./images/trajectory.png)
 
 A point can be copied.  
 A trajectory cannot.
@@ -44,17 +44,18 @@ A trajectory cannot.
 
 ### State Convergence
 
-![State Convergence](./docs/fig2_convergence.png)
+![State Convergence](./images/convergence.png)
 
 Authentication is not a snapshot.
 
-It is the process of multiple states converging into a stable identity.
+It is a process where multiple states  
+**align and stabilize over time**.
 
 ---
 
 ### Time Decay
 
-![Time Decay](./docs/fig3_timedecay.png)
+![Time Decay](./images/time_decay.png)
 
 Authentication decays over time.
 
@@ -69,7 +70,28 @@ GyroAuth removes the fundamental weakness of authentication:
 > **Transferability**
 
 Traditional authentication can be copied.  
-GyroAuth cannot — because it depends on **live convergence over time**.
+GyroAuth cannot — because it depends on  
+**continuous convergence over time**.
+
+---
+
+## 🧠 Under the Hood (Conceptual Model)
+
+GyroAuth can be understood as a dynamic system:
+
+- Authentication is not a fixed state  
+- It is a continuously evaluated process  
+- Stability emerges from consistent behavior over time  
+
+At a deeper level, authentication behaves like:
+
+> a system that maintains alignment across time, space, motion, and device context
+
+This makes authentication:
+
+- non-transferable  
+- time-bound  
+- resistant to replay  
 
 ---
 
@@ -121,8 +143,8 @@ GyroAuth cannot — because it depends on **live convergence over time**.
 ---
 
 ## 📌 Status
-Concept → Structure → Early Implementation
 
+Concept → Structure → Early Implementation
 
 ---
 

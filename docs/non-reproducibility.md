@@ -1,102 +1,34 @@
-# Non-Reproducibility
+# Non-Reproducibility and Non-Transferability
+
+## Non-Transferability
+
+GyroAuth prevents credential transfer because authentication depends on:
+
+- dynamic convergence
+- temporal alignment
+- phase consistency
+
+A stolen snapshot cannot reproduce:
+
+- trajectory
+- phase evolution
+- long-term stability
 
 ---
 
-## 1. Core Idea
+## Time Dependency
 
-The core security property of GyroAuth is:
+Even if data is stolen:
 
-> Authentication cannot be reproduced.
+\[
+\mathrm{Stab}(t+\Delta t) < \theta
+\]
 
----
-
-## 2. Traditional Security Model
-
-Security is based on:
-
-* protecting secrets
-* preventing access
-* increasing difficulty
+thus authentication fails.
 
 ---
 
-## Problem
+## Core Principle
 
-If secrets are stolen:
-
-→ authentication can be replayed
-
----
-
-## 3. GyroAuth Model
-
-Authentication depends on:
-
-* space
-* time
-* motion
-* device constraints
-
----
-
-## 4. Attack Model
-
-An attacker must reproduce:
-
-[
-X_t = (S_t, T_t, M_t, D_t)
-]
-
----
-
-## 5. Impossibility
-
-Perfect reproduction requires:
-
-* exact location
-* exact time
-* exact motion
-* exact device state
-
----
-
-[
-P(X'_t = X_t) \approx 0
-]
-
----
-
-## 6. Security Shift
-
-Traditional:
-
-> Hard to break
-
-GyroAuth:
-
-> Impossible to satisfy
-
----
-
-## 7. Key Statement
-
-> Security is not resistance.
-> It is non-reproducibility.
-
----
-
-## 8. Implication
-
-Even if credentials are leaked:
-
-→ authentication cannot succeed
-
----
-
-## 9. Conclusion
-
-Authentication is no longer about secrets.
-
-It is about the ability to reproduce a valid state.
-
-And that is fundamentally non-reproducible.
+Static credentials can be copied.  
+Dynamic convergence cannot.

@@ -3,21 +3,20 @@
 ## System Overview
 
 Reality (Field)
-→ Slice (Observation Operator)
+→ Observation (Slice)
 → Feature Extraction
 → Trajectory Formation
 → Convergence Engine
-→ Stability Estimator
+→ Stability Estimation
 → Authentication Decision
 
 ---
 
-## Continuous Authentication Loop
+## Continuous Authentication
 
-loop:
-  observe field
-  apply slice
-  update trajectory
-  compute stability
-  if Stab < θ:
-      re-authenticate
+Authentication is evaluated continuously:
+
+- Observe
+- Update trajectory
+- Compute stability
+- Re-evaluate authentication state

@@ -28,6 +28,11 @@ POST /observe
 - Input: raw sensor / behavior data
 - Output: processed observation (Slice result)
 
+POST /observe
+POST /evaluate
+GET /stability
+POST /reauth
+
 ### Evaluation
 
 POST /evaluate

@@ -1,5 +1,6 @@
 # GyroAuth
 
+Built on Gyro Logic
 **Authentication is not a point.  
 It is convergence.**
 

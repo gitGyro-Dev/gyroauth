@@ -1,6 +1,23 @@
 # GyroAuth
 
 Built on Gyro Logic
+
+## 🧠 Theoretical Foundation
+
+GyroAuth is built on **Gyro Logic v2.0**:
+
+https://doi.org/10.5281/zenodo.19555020
+
+In Gyro Logic:
+
+- Identity is a trajectory  
+- Stability is convergence  
+- Observation is dynamic  
+
+GyroAuth applies this to authentication:
+
+> Authentication = State Convergence
+
 **Authentication is not a point.  
 It is convergence.**
 

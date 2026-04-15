@@ -2,6 +2,10 @@
 
 Built on Gyro Logic
 
+Authentication application built on Gyro Logic.
+For the formal theory, see gyrologic.
+For broader system architecture, see GyroOS.
+
 ## 🧠 Theoretical Foundation
 
 GyroAuth is built on **Gyro Logic v2.0**:

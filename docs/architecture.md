@@ -1,22 +1,22 @@
-# GyroAuth Architecture
+# Architecture
 
-## System Overview
+## Pipeline
 
-Reality (Field)
+Structure
 → Observation (Slice)
-→ Feature Extraction
-→ Trajectory Formation
-→ Convergence Engine
-→ Stability Estimation
-→ Authentication Decision
+→ Feature Space
+→ Stability
+→ Trajectory
+→ Convergence
+→ Authentication
 
 ---
 
-## Continuous Authentication
+## Components
 
-Authentication is evaluated continuously:
-
-- Observe
-- Update trajectory
-- Compute stability
-- Re-evaluate authentication state
+- Structure Input Layer
+- Slice Engine
+- Stability Engine
+- Trajectory Tracker
+- Convergence Engine
+- Auth Decision

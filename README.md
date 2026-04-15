@@ -1,49 +1,94 @@
 # GyroAuth
-Authentication as State Convergence
+
+**Authentication as State Convergence**
 
 ---
 
-## Concept
+## 🧠 What is GyroAuth?
 
-Authentication is not identity verification.
+GyroAuth is a novel authentication framework where:
 
-It is convergence of dynamic state.
-
----
-
-## Core Idea
-
-Auth = trajectory convergence
+> Authentication is not matching.
+> It is convergence.
 
 ---
 
-## Pipeline
+## 🔥 Why it matters
 
-Input → Slice → Stability → Trajectory → Convergence → Auth
+Traditional authentication is static.
 
----
+GyroAuth is dynamic.
 
-## Mapping to Gyro Logic
-
-| Theory | Implementation |
-|------|------|
-| Structure | Input |
-| Slice | Feature extraction |
-| Stability | scoring |
-| Identity | trajectory |
-| Limit | convergence |
+![fig3](docs/fig3_comparison.png)
 
 ---
 
-## API
+## 🧩 Core Concept
 
-- POST /observe
-- GET /stability
-- POST /authenticate
-- POST /reconverge
+> Identity is not a fixed object.
+> It is a stable trajectory.
+
+![fig2](docs/fig2_identity.png)
 
 ---
 
-## Status
+## ⚙️ Architecture
 
-PoC in progress
+GyroAuth transforms behavior into identity through structured observation.
+
+![fig1](docs/fig1_architecture.png)
+
+---
+
+## 🚀 How it works
+
+Authentication is a process, not a point.
+
+![fig5](docs/fig5_flow.png)
+
+---
+
+## 🧮 Theoretical Foundation
+
+Stability is defined as robustness under perturbation.
+
+![fig4](docs/fig4_stability.png)
+
+---
+
+## 📡 API
+
+* POST /observe
+* GET /stability
+* POST /enroll
+* POST /authenticate
+* POST /reconverge
+
+---
+
+## 🧪 PoC
+
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## 🔗 Relation to Gyro Logic
+
+GyroAuth is built on Gyro Logic:
+
+https://github.com/gitGyro-Dev/gyrologic
+
+---
+
+## 💡 Statement
+
+> Identity is what remains stable through change.
+
+---

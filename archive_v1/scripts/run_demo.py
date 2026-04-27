@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from app.auth_engine import auth_score, decide_auth, trajectory_similarity
-from app.config import settings
-from app.demo_data import shifted_demo_sequence, stable_demo_sequence
-from app.slice_engine import slice_state
-from app.stability import stability
+from archive_v1.app.auth_engine import auth_score, decide_auth, trajectory_similarity
+from archive_v1.app.config import settings
+from archive_v1.app.demo_data import shifted_demo_sequence, stable_demo_sequence
+from archive_v1.app.slice_engine import slice_state
+from archive_v1.app.stability import stability
 
 
 def evaluate_sequence(seq):

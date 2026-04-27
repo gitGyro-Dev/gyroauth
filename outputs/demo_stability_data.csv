@@ -1,0 +1,13 @@
+t,stability,auth_state,event
+0,0.94,AUTH_STABLE,session_start
+1,0.93,AUTH_STABLE,normal_observation
+2,0.91,AUTH_STABLE,normal_behavior
+3,0.88,AUTH_STABLE,small_drift
+4,0.78,RECONVERGING,behavior_drift_detected
+5,0.73,RECONVERGING,additional_observation_required
+6,0.81,RECONVERGING,reconvergence_started
+7,0.89,AUTH_STABLE,stability_recovered
+8,0.92,AUTH_STABLE,normal_session_restored
+9,0.69,RECONVERGING,network_anomaly
+10,0.45,AUTH_FAIL,device_behavior_mismatch
+11,0.22,AUTH_FAIL,attack_detected

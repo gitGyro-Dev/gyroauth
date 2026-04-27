@@ -4,7 +4,11 @@
 
 ---
 
-## 🧭 Position in the Stack
+![Live Stability](outputs/live_stability_timeline.png)
+
+---
+
+## Position in the Stack
 
 ```text
 Gyro Logic   = Theory
@@ -13,20 +17,20 @@ GyroAuth     = Application (this repository)
 ```
 
 * Gyro Logic defines **Structure / Slice / Deviation / Stability**
-* GyroOS computes **Deviation → Stability → Selection**
+* GyroOS computes **Deviation -> Stability -> Selection**
 * GyroAuth uses those outputs for **authentication decisions**
 
-👉 Upper layers do NOT depend on lower layers
-👉 Lower layers implement upper layers
-👉 Mixing layers is strictly prohibited
+Upper layers do NOT depend on lower layers.  
+Lower layers implement upper layers.  
+Mixing layers is strictly prohibited.
 
 ---
 
-## 🧠 What is GyroAuth?
+## What is GyroAuth?
 
 GyroAuth is an authentication system where:
 
-> Authentication is not exact matching.
+> Authentication is not exact matching.  
 > It is **stability-based selection under intrinsic deviation**.
 
 Traditional authentication asks:
@@ -43,7 +47,7 @@ Is this session still operationally acceptable as the same identity?
 
 ---
 
-## 🔥 Why it matters
+## Why it matters
 
 Traditional authentication assumes:
 
@@ -59,13 +63,13 @@ But real-world identity is:
 
 GyroAuth is designed for:
 
-👉 **Identity under deviation**
-👉 **Authentication as a continuous process**
-👉 **Selection instead of matching**
+* Identity under deviation
+* Authentication as a continuous process
+* Selection instead of matching
 
 ---
 
-## 🧩 Core Definition
+## Core Definition
 
 ```text
 Authentication = Stability-based Selection
@@ -74,18 +78,18 @@ Authentication = Stability-based Selection
 More precisely:
 
 ```text
-Auth ⇔ Selected(Representation | Stability under Δ)
+Auth <=> Selected(Representation | Stability under Delta)
 ```
 
 Where:
 
-* Δ = Deviation between observations
+* Delta = Deviation between observations
 * Stability = tolerance to deviation
 * Selection = operational choice
 
 ---
 
-## ⚙️ Core Flow
+## Core Flow
 
 ```text
 Structure
@@ -94,7 +98,7 @@ Slice (multi-perspective observation)
 ↓
 Observation Set
 ↓
-Δ (Deviation)
+Delta (Deviation)
 ↓
 Stability Evaluation
 ↓
@@ -105,7 +109,7 @@ Auth Decision
 
 ---
 
-## 🧠 Multi-Slice Model
+## Multi-Slice Model
 
 GyroAuth operates on multiple observational slices:
 
@@ -116,12 +120,12 @@ GyroAuth operates on multiple observational slices:
 * Behavior (interaction patterns)
 * Network (communication characteristics)
 
-👉 Identity is not a point
-👉 It is a **stable trajectory across slices**
+Identity is not a point.  
+It is a **stable trajectory across slices**.
 
 ---
 
-## 🔐 Auth Decision States
+## Auth Decision States
 
 ```text
 AUTH_STABLE
@@ -130,22 +134,19 @@ AUTH_FAIL
 ```
 
 ### AUTH_STABLE
-
 * Session is stable
 
 ### RECONVERGING
-
 * Deviation increased
 * Additional observation required
 
 ### AUTH_FAIL
-
 * Stability collapsed
 * Re-authentication required
 
 ---
 
-## 🔁 Continuous Authentication
+## Continuous Authentication
 
 Authentication is not a one-time event.
 
@@ -155,11 +156,11 @@ GyroAuth continuously evaluates:
 * Slice inconsistency
 * Re-convergence capability
 
-👉 Identity must remain stable over time
+Identity must remain stable over time.
 
 ---
 
-## 🛡️ Security Model
+## Security Model
 
 GyroAuth is designed against:
 
@@ -176,12 +177,11 @@ Why it works:
 * Time-dependent trajectory
 * Non-reproducible state evolution
 
-👉 Identity cannot be copied
-👉 It must **continuously emerge**
+Identity cannot be copied. It must continuously emerge.
 
 ---
 
-## 📡 API (Conceptual)
+## API (Conceptual)
 
 ```text
 POST /observe
@@ -192,7 +192,7 @@ GET  /session/{id}
 
 ---
 
-## 🔗 Relation to GyroOS
+## Relation to GyroOS
 
 GyroAuth does NOT compute:
 
@@ -202,7 +202,7 @@ GyroAuth does NOT compute:
 
 These are provided by GyroOS.
 
-👉 GyroAuth only handles:
+GyroAuth only handles:
 
 * Policy
 * Risk control
@@ -210,18 +210,35 @@ These are provided by GyroOS.
 
 ---
 
-## 🧪 PoC (Planned)
+## Live PoC (FastAPI)
 
-GyroAuth v2 includes a PoC to demonstrate:
+Run:
 
-* Authentication under deviation
-* Continuous validation
-* Attack resistance
-* Re-convergence behavior
+```bash
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+Open:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Demo flow:
+
+```text
+/observe -> /authenticate -> AUTH_STABLE
+/observe -> /authenticate -> RECONVERGING
+/observe -> /authenticate -> AUTH_STABLE
+/observe -> /authenticate -> AUTH_FAIL
+```
+
+The graph above reflects this exact flow.
 
 ---
 
-## 💼 Use Cases
+## Use Cases
 
 * Passwordless authentication
 * Continuous session verification
@@ -231,7 +248,7 @@ GyroAuth v2 includes a PoC to demonstrate:
 
 ---
 
-## 📄 Documentation
+## Documentation
 
 Start here:
 
@@ -239,22 +256,23 @@ Start here:
 * docs/01_auth_model.md
 * docs/03_decision_policy.md
 * docs/08_poc_design.md
+* docs/13_fastapi_poc.md
 
 ---
 
-## 📦 Repository Structure
+## Repository Structure
 
 ```text
-docs/        → Specifications
-app/         → Implementation
-scripts/     → Demo
-examples/    → Sample data
-archive_v1/  → Previous version
+docs/        -> Specifications
+app/         -> Implementation
+scripts/     -> Demo
+examples/    -> Sample data
+archive_v1/  -> Previous version
 ```
 
 ---
 
-## 🧠 One-line Definition
+## One-line Definition
 
 GyroAuth is:
 
@@ -262,8 +280,8 @@ GyroAuth is:
 
 ---
 
-## 🔴 Final Statement
+## Final Statement
 
 Authentication is not about perfect reproduction.
 
-👉 It is about whether identity **still holds under change**.
+It is about whether identity **still holds under change**.

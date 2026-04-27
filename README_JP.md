@@ -1,44 +1,48 @@
 # GyroAuth v2
 
-**ズレを前提とした Stability-based Selection 認証**
+**ズレの中で成立する「安定性」による認証**
 
 ---
 
-## 🧭 レイヤー構造
+![Live Stability](outputs/live_stability_timeline.png)
+
+---
+
+## 🧭 スタック内の位置
 
 ```text
 Gyro Logic   = 理論
-GyroOS       = 実行系
+GyroOS       = 実行基盤
 GyroAuth     = 応用（本リポジトリ）
 ```
 
-* Gyro Logic は Structure / Slice / Deviation / Stability を定義
-* GyroOS は Deviation → Stability → Selection を計算
-* GyroAuth はそれを使って認証判断を行う
+- Gyro Logic は **Structure / Slice / Deviation / Stability** を定義  
+- GyroOS は **Deviation → Stability → Selection** を計算  
+- GyroAuth はそれを用いて **認証判断** を行う  
 
-👉 上位は下位に依存しない
-👉 下位は上位を実装する
-👉 混同は禁止
+👉 上位は下位に依存しない  
+👉 下位は上位を実装する  
+👉 混同は禁止  
 
 ---
 
-## 🧠 GyroAuthとは
+## 🧠 GyroAuthとは？
 
-GyroAuthは次のような認証システムです。
+GyroAuthは次のような認証システムです：
 
-> 認証は一致ではない
-> 👉 ズレの中で成立しているかを選択するものである
+> 認証とは「一致」ではなく  
+> **ズレの中で成立する安定性による選択である**
 
-従来：
+従来の認証：
 
 ```text
-一致しているか？
+入力が一致しているか？
 ```
 
 GyroAuth：
 
 ```text
-このセッションは同一人物として成立しているか？
+この状態は、同一の存在として成立しているか？
 ```
 
 ---
@@ -47,39 +51,39 @@ GyroAuth：
 
 従来の認証は：
 
-* 完全一致前提
-* 静的なID
-* 成功 or 失敗
+- 完全一致を前提
+- 静的なアイデンティティ
+- 成功 / 失敗の二値
 
-しかし現実は：
+しかし現実のアイデンティティは：
 
-* ノイズがある
-* 状態は変化する
-* 文脈依存
+- ノイズを含む
+- 動的である
+- 状況依存
 
-GyroAuthは：
+GyroAuthは以下を前提に設計されています：
 
-👉 ズレ前提
-👉 継続的認証
-👉 選択による判断
+👉 ズレを前提とした本人性  
+👉 継続的な認証  
+👉 一致ではなく選択  
 
 ---
 
 ## 🧩 コア定義
 
 ```text
-認証 = Stability-based Selection
+認証 = 安定性に基づく選択
 ```
 
 より正確には：
 
 ```text
-Auth ⇔ 安定性に基づく選択
+Auth ⇔ Stability(Δ) に基づく Selection
 ```
 
 ---
 
-## ⚙️ 処理フロー
+## ⚙️ コアフロー
 
 ```text
 Structure
@@ -90,28 +94,28 @@ Observation
 ↓
 Δ（ズレ）
 ↓
-Stability
+Stability（安定性）
 ↓
-Selection
+Selection（選択）
 ↓
-認証判断
+認証
 ```
 
 ---
 
-## 🧠 Multi-Sliceモデル
+## 🧠 マルチスライスモデル
 
-複数の観測軸を使う：
+以下の複数観測で評価：
 
-* Space（位置）
-* Time（時間）
-* Motion（動き）
-* Device（端末）
-* Behavior（操作）
-* Network（通信）
+- Space（位置）
+- Time（時間）
+- Motion（動き）
+- Device（端末）
+- Behavior（行動）
+- Network（通信）
 
-👉 IDは点ではない
-👉 複数Sliceにまたがる軌跡である
+👉 アイデンティティは「点」ではない  
+👉 **スライスを横断した軌跡である**
 
 ---
 
@@ -123,49 +127,42 @@ RECONVERGING
 AUTH_FAIL
 ```
 
-### AUTH_STABLE
-
-安定している
-
-### RECONVERGING
-
-ズレ増加 → 再収束中
-
-### AUTH_FAIL
-
-崩壊 → 再認証必要
+- AUTH_STABLE：安定  
+- RECONVERGING：再収束中  
+- AUTH_FAIL：崩壊  
 
 ---
 
 ## 🔁 継続認証
 
-認証は一度きりではない。
+GyroAuthは一度の認証ではなく：
 
-* 状態の変化
-* ズレの増加
-* 再収束可能性
+- 安定性の変化
+- スライス間のズレ
+- 回復可能性
 
-👉 常に評価され続ける
+を継続的に評価します。
 
 ---
 
-## 🛡️ セキュリティ
+## 🛡️ セキュリティモデル
 
-対応する攻撃：
+対応可能な攻撃：
 
-* リプレイ攻撃
-* なりすまし
-* 端末偽装
-* 行動模倣
+- リプレイ攻撃
+- 資格情報漏洩
+- デバイス偽装
+- 行動模倣
+- エミュレータ
 
 理由：
 
-* 静的情報に依存しない
-* 時系列依存
-* 再現不能
+- 静的情報に依存しない
+- 多次元評価
+- 時間依存
+- 再現不可能
 
-👉 コピーでは通らない
-👉 状態として成立する必要がある
+👉 コピーできない認証
 
 ---
 
@@ -180,67 +177,22 @@ GET  /session/{id}
 
 ---
 
-## 🔗 GyroOSとの関係
+## 🧪 PoC（実動）
 
-GyroAuthは以下を計算しない：
+```bash
+uvicorn app.main:app --reload
+```
 
-* Deviation
-* Stability
-* Selection
-
-👉 GyroOSが提供する
-
-GyroAuthは：
-
-* ポリシー
-* リスク制御
-* 認証判断
-
-のみを担当
-
----
-
-## 🧪 PoC
-
-以下を検証する：
-
-* ズレ前提でも認証成立
-* 継続認証
-* 攻撃耐性
-* 再収束
-
----
-
-## 💼 ユースケース
-
-* パスワードレス認証
-* 継続セッション監視
-* デバイス信頼
-* 異常検知
-* 次世代Zero Trust
+→ http://127.0.0.1:8000/docs
 
 ---
 
 ## 📄 ドキュメント
 
-以下から開始：
-
-* docs/00_positioning.md
-* docs/01_auth_model.md
-* docs/03_decision_policy.md
-* docs/08_poc_design.md
-
----
-
-## 📦 構成
-
-```text
-docs/        → 仕様
-app/         → 実装
-scripts/     → デモ
-examples/    → サンプル
-archive_v1/  → 旧版
-```
+- docs/00_positioning.md
+- docs/01_auth_model.md
+- docs/03_decision_policy.md
+- docs/13_fastapi_poc.md
 
 ---
 
@@ -248,12 +200,12 @@ archive_v1/  → 旧版
 
 GyroAuthとは：
 
-> ズレの中で成立しているかを判断する認証システム
+> ズレの中でも成立する状態かどうかで本人性を判断する認証
 
 ---
 
 ## 🔴 最後に
 
-認証とは一致ではない。
+認証とは「一致」ではない。
 
-👉 変化の中で成立しているかどうかである
+👉 **変化の中で成立するかどうかである**

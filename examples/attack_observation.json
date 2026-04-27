@@ -1,0 +1,12 @@
+{
+  "session_id": "demo-session-001",
+  "timestamp": 1710000200,
+  "slices": {
+    "device": {"stability": 0.32},
+    "behavior": {"stability": 0.38},
+    "time": {"stability": 0.84},
+    "space": {"stability": 0.62},
+    "network": {"stability": 0.41},
+    "motion": {"stability": 0.45}
+  }
+}

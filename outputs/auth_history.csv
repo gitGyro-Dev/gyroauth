@@ -1,0 +1,5 @@
+session_id,timestamp,stability,auth_state,event
+demo-session-001,1710000000.0,0.9117,AUTH_STABLE,normal
+demo-session-001,1710000100.0,0.8183,RECONVERGING,behavior_drift;space_drift;network_drift;motion_drift
+demo-session-001,1710000150.0,0.895,AUTH_STABLE,normal
+demo-session-001,1710000200.0,0.4,AUTH_FAIL,device_critical;behavior_critical;time_drift;space_warning;network_critical;motion_warning;critical_deviation_detected

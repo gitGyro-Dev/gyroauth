@@ -1,3 +1,8 @@
+## 🚀 Latest Release
+
+GyroAuth v2.0 (PoC)  
+https://github.com/gitGyro-Dev/gyroauth/releases/tag/v2.0.0
+
 # GyroAuth v2
 
 **Authentication by Stability-based Selection under Deviation**

@@ -285,3 +285,5 @@ GyroAuth is:
 Authentication is not about perfect reproduction.
 
 It is about whether identity **still holds under change**.
+
+![Version](https://img.shields.io/badge/version-v2.0-blue)

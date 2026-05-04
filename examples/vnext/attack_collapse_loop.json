@@ -1,0 +1,51 @@
+{
+  "session_id": "demo-session-001",
+  "user_id": "user-001",
+  "timestamp": 1710000240,
+  "loop_result": {
+    "process_id": "process-005",
+    "slice_done": {
+      "x": {
+        "device": 0.3,
+        "behavior": 0.34,
+        "time": 0.72,
+        "space": 0.42,
+        "network": 0.28,
+        "motion": 0.4
+      },
+      "delta": {
+        "device": 0.7,
+        "behavior": 0.66,
+        "time": 0.28,
+        "space": 0.58,
+        "network": 0.72,
+        "motion": 0.57
+      }
+    },
+    "stability": 0.42,
+    "operator_response": "Fail",
+    "history": {
+      "stability_history": [
+        0.66,
+        0.89,
+        0.42
+      ],
+      "deviation_history": [
+        0.31,
+        0.11,
+        0.52
+      ],
+      "response_history": [
+        "Re-auth",
+        "Continue",
+        "Fail"
+      ]
+    }
+  },
+  "risk_context": {
+    "ip_reputation": "bad",
+    "geo_change": true,
+    "new_device": true,
+    "suspicious_flow": true
+  }
+}

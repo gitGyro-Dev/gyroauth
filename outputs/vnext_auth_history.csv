@@ -1,0 +1,6 @@
+session_id,timestamp,stability,deviation_risk,operator_response,auth_score,auth_state
+demo-session-001,1710000000.0,0.92,0.0883,Continue,0.9262,AUTH_STABLE
+demo-session-001,1710000060.0,0.78,0.18,Adjust,0.7625,RECONVERGING
+demo-session-001,1710000120.0,0.66,0.3083,Re-auth,0.5998,REAUTH_REQUIRED
+demo-session-001,1710000180.0,0.89,0.1067,Continue,0.8811,AUTH_STABLE
+demo-session-001,1710000240.0,0.42,0.585,Fail,0.2336,AUTH_FAIL

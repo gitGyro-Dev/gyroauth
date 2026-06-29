@@ -1,9 +1,12 @@
 import requests
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 OWNER = "gitGyro-Dev"
 REPO = "gyroauth"
-TOKEN = os.environ["GITHUB_TOKEN"]
+TOKEN = os.getenv("GITHUB_TOKEN")
 
 url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/README.md"
 

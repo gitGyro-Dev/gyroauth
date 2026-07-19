@@ -41,18 +41,22 @@ jobs:
           if [ -n "$AUTHOR_EMAIL" ]; then
             python tools/build_guarded_criterion_publication.py --strict
           else
-            echo "JXIV_CORRESPONDING_EMAIL is not configured; generating review PDFs with a visible placeholder."
-            python tools/build_guarded_criterion_publication.py
+            echo "JXIV_CORRESPONDING_EMAIL is not configured; using the confirmed repository metadata value."
+            python tools/build_guarded_criterion_publication.py --strict
           fi
 
       - name: Inspect PDF metadata and text extraction
         run: |
-          pdfinfo dist/guarded_criterion_trajectories_en.pdf
-          pdfinfo dist/guarded_criterion_trajectories_jp.pdf
+          pdfinfo dist/guarded_criterion_trajectories_en.pdf | tee /tmp/en_pdfinfo.txt
+          pdfinfo dist/guarded_criterion_trajectories_jp.pdf | tee /tmp/jp_pdfinfo.txt
+          grep -qE '^Page size:.*A4' /tmp/en_pdfinfo.txt
+          grep -qE '^Page size:.*A4' /tmp/jp_pdfinfo.txt
           test "$(stat -c%s dist/guarded_criterion_trajectories_en.pdf)" -lt 20971520
           test "$(stat -c%s dist/guarded_criterion_trajectories_jp.pdf)" -lt 20971520
           pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "Guarded Criterion Trajectories"
+          pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "dev.jxiv@gyro-wedge.com"
           pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "適応型認証"
+          pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "dev.jxiv@gyro-wedge.com"
 
       - name: Upload publication PDFs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

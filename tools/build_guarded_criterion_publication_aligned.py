@@ -37,6 +37,36 @@ FIGURE_WIDTHS = {
 }
 
 
+def parse_figure_source() -> list[base.FigureSpec]:
+    """Parse each caption only through the next level-two section heading.
+
+    The source contains publication-order documentation after Figure 6.  The
+    base parser stopped only at ``## Rendering Notes``, which allowed that
+    documentation to become part of the English Figure 6 caption.  A generic
+    level-two-heading boundary keeps captions and documentation separate.
+    """
+    text = base.FIGURE_SOURCE.read_text(encoding="utf-8")
+    pattern = re.compile(
+        r"^## Figure\s+(\d+)\.\s+(.+?)\n\n"
+        r"```mermaid\n(.*?)\n```\n\n"
+        r"\*\*Caption:\*\*\s+(.+?)"
+        r"(?=\n\n##\s|\Z)",
+        re.MULTILINE | re.DOTALL,
+    )
+    specs = [
+        base.FigureSpec(
+            int(number),
+            title.strip(),
+            mermaid.strip() + "\n",
+            caption.strip(),
+        )
+        for number, title, mermaid, caption in pattern.findall(text)
+    ]
+    if [spec.number for spec in specs] != [1, 2, 3, 4, 5, 6]:
+        raise SystemExit("Expected Figure 1 through Figure 6 in Mermaid source")
+    return specs
+
+
 def latex_escape(text: str) -> str:
     """Escape caption text for raw LaTeX while preserving Unicode."""
     text = text.replace("`", "")
@@ -116,6 +146,7 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     return block.replace(closing_front_matter, header + closing_front_matter, 1)
 
 
+base.parse_figure_source = parse_figure_source
 base.figure_markdown = figure_markdown
 base.insert_figures = insert_figures_in_publication_order
 base.title_block = title_block_with_graphics

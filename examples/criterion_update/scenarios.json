@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "description": "Deterministic scenarios for guarded criterion update PoC.",
+  "scenarios": [
+    {
+      "id": "N1",
+      "name": "Legitimate New Device Transition",
+      "initial_criterion": {
+        "mu": 0.2,
+        "width": 0.12,
+        "provenance_requirement": 0.7,
+        "challenge_requirement": 0.7,
+        "rollback_integrity": 1
+      },
+      "observations": [
+        {
+          "label": "new device first seen",
+          "y": 0.31,
+          "context": "new_device",
+          "provenance": 0.82,
+          "cross": 0.7,
+          "challenge": 0.2,
+          "privilege": 0.1,
+          "source_integrity": 0.95,
+          "context_explained": true,
+          "challenge_required": true,
+          "attack_suspected": false
+        },
+        {
+          "label": "successful re-authentication",
+          "y": 0.3,
+          "context": "new_device",
+          "provenance": 0.92,
+          "cross": 0.88,
+          "challenge": 0.95,
+          "privilege": 0.05,
+          "source_integrity": 0.97,
+          "context_explained": true,
+          "challenge_required": true,
+          "attack_suspected": false
+        },
+        {
+          "label": "trusted post-challenge behavior",
+          "y": 0.29,
+          "context": "new_device",
+          "provenance": 0.9,
+          "cross": 0.92,
+          "challenge": 0.9,
+          "privilege": 0.05,
+          "source_integrity": 0.97,
+          "context_explained": true,
+          "challenge_required": false,
+          "attack_suspected": false,
+          "adaptation_complete": true
+        }
+      ]
+    },
+    {
+      "id": "P1",
+      "name": "Gradual Region Expansion Poisoning",
+      "initial_criterion": {
+        "mu": 0.2,
+        "width": 0.12,
+        "provenance_requirement": 0.7,
+        "challenge_requirement": 0.7,
+        "rollback_integrity": 1
+      },
+      "observations": [
+        {
+          "label": "small transfer expansion 1",
+          "y": 0.24,
+          "context": "normal",
+          "provenance": 0.78,
+          "cross": 0.64,
+          "challenge": 0.75,
+          "privilege": 0.05,
+          "source_integrity": 0.9,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        },
+        {
+          "label": "small transfer expansion 2",
+          "y": 0.24,
+          "context": "normal",
+          "provenance": 0.78,
+          "cross": 0.62,
+          "challenge": 0.75,
+          "privilege": 0.05,
+          "source_integrity": 0.9,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        },
+        {
+          "label": "small transfer expansion 3",
+          "y": 0.5,
+          "context": "normal",
+          "provenance": 0.76,
+          "cross": 0.55,
+          "challenge": 0.72,
+          "privilege": 0.2,
+          "source_integrity": 0.88,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        },
+        {
+          "label": "attack reference approach",
+          "y": 0.62,
+          "context": "normal",
+          "provenance": 0.75,
+          "cross": 0.5,
+          "challenge": 0.7,
+          "privilege": 0.25,
+          "source_integrity": 0.85,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        },
+        {
+          "label": "attack reference sustained",
+          "y": 0.62,
+          "context": "normal",
+          "provenance": 0.75,
+          "cross": 0.48,
+          "challenge": 0.7,
+          "privilege": 0.25,
+          "source_integrity": 0.85,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "name": "Single Evidence Source Compromise",
+      "initial_criterion": {
+        "mu": 0.2,
+        "width": 0.12,
+        "provenance_requirement": 0.7,
+        "challenge_requirement": 0.7,
+        "rollback_integrity": 1
+      },
+      "observations": [
+        {
+          "label": "apparently valid location but compromised source",
+          "y": 0.28,
+          "context": "remote",
+          "provenance": 0.88,
+          "cross": 0.35,
+          "challenge": 0.8,
+          "privilege": 0.1,
+          "source_integrity": 0.2,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        },
+        {
+          "label": "continued cross-evidence inconsistency",
+          "y": 0.3,
+          "context": "remote",
+          "provenance": 0.86,
+          "cross": 0.3,
+          "challenge": 0.8,
+          "privilege": 0.12,
+          "source_integrity": 0.2,
+          "context_explained": false,
+          "challenge_required": false,
+          "attack_suspected": true
+        }
+      ]
+    }
+  ]
+}

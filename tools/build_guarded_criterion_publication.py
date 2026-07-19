@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import shutil
 import subprocess
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 try:
@@ -17,8 +19,38 @@ except ImportError as exc:  # pragma: no cover
 
 ROOT = Path(__file__).resolve().parents[1]
 PAPER = ROOT / "paper"
+FIGURE_SOURCE = ROOT / "figures" / "guarded_criterion_trajectories_mermaid.md"
 BUILD = ROOT / "build" / "guarded_criterion_trajectories"
+BUILD_FIGURES = BUILD / "figures"
 DIST = ROOT / "dist"
+DIST_FIGURES = DIST / "figures"
+
+
+@dataclass(frozen=True)
+class FigureSpec:
+    number: int
+    title: str
+    mermaid: str
+    caption_en: str
+
+
+JP_CAPTIONS = {
+    1: "GyroAuthは、現在のAuthentication Relationと、将来の評価に用いるCriterionのIntegrityを、関連しつつも別のProcessとして評価する。",
+    2: "Candidate生成とCandidate採用を分離する。Candidateを有効化するのはACCEPTのみである。",
+    3: "Criterion StateとCriterion Update Responseは異なる。FREEZEはSubject Evaluationを必ずしも終了させず、適応経路を停止する。",
+    4: "実装したP1 Scenarioでは、直接採用は攻撃参照値が許容されるまでCriterionを拡張した一方、Guard付き採用は許容前に適応を凍結した。",
+    5: "AUTH_STABLE + FREEZEは、現在のAuthentication Relationを一時的に継続しながら、Criterion適応を禁止する状態を表す。",
+    6: "本提案は、Adaptive Authentication、Continuous Authentication、Drift対応、およびPoisoning-aware adaptationの交点に位置づけられる。",
+}
+
+FIGURE_INSERTION_TARGETS = {
+    1: r"^##\s+2\.",
+    6: r"^##\s+3\.",
+    2: r"^##\s+6\.",
+    3: r"^##\s+7\.",
+    4: r"^###\s+8\.3\b",
+    5: r"^##\s+10\.",
+}
 
 
 def run(cmd: list[str]) -> None:
@@ -27,7 +59,7 @@ def run(cmd: list[str]) -> None:
 
 
 def strip_working_header(text: str) -> str:
-    """Remove the draft-only title and status lines from a manuscript."""
+    """Remove draft-only title and status lines from a manuscript."""
     lines = text.splitlines()
     out: list[str] = []
     skipping = True
@@ -38,6 +70,9 @@ def strip_working_header(text: str) -> str:
             line.startswith("**Author:")
             or line.startswith("**Project:")
             or line.startswith("**Manuscript status:")
+            or line.startswith("**著者:")
+            or line.startswith("**プロジェクト:")
+            or line.startswith("**原稿状態:")
         ):
             continue
         if skipping and not line.strip():
@@ -48,18 +83,10 @@ def strip_working_header(text: str) -> str:
 
 
 def normalize_submission_headings(text: str, lang: str) -> str:
-    """Convert draft headings into clean Pandoc section headings.
-
-    The manuscript sources retain explicit section numbers for readability on
-    GitHub. Publication PDFs use Pandoc's --number-sections instead, so those
-    manual prefixes are removed during the build. Heading levels are also
-    shifted up because the document title is supplied through metadata rather
-    than represented as a numbered H1 section.
-    """
+    """Remove manual numbering and let Pandoc number the publication PDF."""
     normalized: list[str] = []
     heading_re = re.compile(r"^(#{2,6})\s+(.+?)\s*$")
     number_re = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
-
     abstract_title = "Abstract" if lang == "en" else "要旨"
 
     for line in text.splitlines():
@@ -67,17 +94,95 @@ def normalize_submission_headings(text: str, lang: str) -> str:
         if not match:
             normalized.append(line)
             continue
-
         hashes, title = match.groups()
         title = number_re.sub("", title).strip()
         new_hashes = "#" * (len(hashes) - 1)
-
         if title == abstract_title:
             normalized.append(f"{new_hashes} {title} {{.unnumbered}}")
         else:
             normalized.append(f"{new_hashes} {title}")
-
     return "\n".join(normalized).strip() + "\n"
+
+
+def parse_figure_source() -> list[FigureSpec]:
+    text = FIGURE_SOURCE.read_text(encoding="utf-8")
+    pattern = re.compile(
+        r"^## Figure\s+(\d+)\.\s+(.+?)\n\n"
+        r"```mermaid\n(.*?)\n```\n\n"
+        r"\*\*Caption:\*\*\s+(.+?)"
+        r"(?=\n\n## Figure|\n\n## Rendering Notes|\Z)",
+        re.MULTILINE | re.DOTALL,
+    )
+    specs = [
+        FigureSpec(int(number), title.strip(), mermaid.strip() + "\n", caption.strip())
+        for number, title, mermaid, caption in pattern.findall(text)
+    ]
+    if [spec.number for spec in specs] != [1, 2, 3, 4, 5, 6]:
+        raise SystemExit("Expected Figure 1 through Figure 6 in Mermaid source")
+    return specs
+
+
+def render_figures() -> None:
+    """Render Mermaid diagrams to editable SVG, publication PNG, and PDF."""
+    if shutil.which("mmdc") is None:
+        raise SystemExit("Mermaid CLI (mmdc) is required")
+
+    BUILD_FIGURES.mkdir(parents=True, exist_ok=True)
+    DIST_FIGURES.mkdir(parents=True, exist_ok=True)
+    config_path = BUILD_FIGURES / "mermaid-config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "theme": "neutral",
+                "flowchart": {"htmlLabels": False, "curve": "linear"},
+                "fontFamily": "Noto Sans, DejaVu Sans, sans-serif",
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    for spec in parse_figure_source():
+        stem = f"figure_{spec.number}"
+        mmd = BUILD_FIGURES / f"{stem}.mmd"
+        mmd.write_text(spec.mermaid, encoding="utf-8")
+        for suffix in ("svg", "png", "pdf"):
+            output = BUILD_FIGURES / f"{stem}.{suffix}"
+            cmd = [
+                "mmdc",
+                "-i", str(mmd),
+                "-o", str(output),
+                "-c", str(config_path),
+                "-t", "neutral",
+                "-b", "white",
+                "--scale", "2",
+            ]
+            if suffix == "png":
+                cmd += ["-w", "1800"]
+            run(cmd)
+            shutil.copy2(output, DIST_FIGURES / output.name)
+
+
+def figure_markdown(number: int, lang: str) -> str:
+    specs = {spec.number: spec for spec in parse_figure_source()}
+    caption = specs[number].caption_en if lang == "en" else JP_CAPTIONS[number]
+    return (
+        f"\n\n![{caption}](figures/figure_{number}.png)"
+        f"{{#fig:guarded-criterion-{number} width=95%}}\n\n"
+    )
+
+
+def insert_figures(body: str, lang: str) -> str:
+    """Insert six rendered figures at stable semantic points in both manuscripts."""
+    for number in (1, 6, 2, 3, 4, 5):
+        target = re.compile(FIGURE_INSERTION_TARGETS[number], re.MULTILINE)
+        match = target.search(body)
+        if match is None:
+            raise SystemExit(
+                f"Could not find insertion target for Figure {number} in {lang} manuscript"
+            )
+        body = body[: match.start()] + figure_markdown(number, lang) + body[match.start() :]
+    return body
 
 
 def title_block(meta: dict[str, str], lang: str) -> str:
@@ -113,7 +218,6 @@ def title_block(meta: dict[str, str], lang: str) -> str:
 
 ---
 """
-
     yaml_text = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False).strip()
     return f"---\n{yaml_text}\n---\n\n{visible}"
 
@@ -158,6 +262,7 @@ def build_one(meta: dict[str, str], lang: str) -> Path:
     src = PAPER / f"guarded_criterion_trajectories_submission_{lang}.md"
     body = strip_working_header(src.read_text(encoding="utf-8"))
     body = append_required_statements(body, meta, lang)
+    body = insert_figures(body, lang)
     body = normalize_submission_headings(body, lang)
     merged = title_block(meta, lang) + "\n" + body
 
@@ -169,7 +274,7 @@ def build_one(meta: dict[str, str], lang: str) -> Path:
     out = DIST / f"guarded_criterion_trajectories_{lang}.pdf"
     common = [
         "pandoc", str(md), "-o", str(out),
-        "--from", "gfm+tex_math_dollars",
+        "--from", "gfm+tex_math_dollars+link_attributes",
         "--pdf-engine=lualatex",
         "--toc",
         "--number-sections",
@@ -206,21 +311,30 @@ def preflight(pdf: Path) -> None:
     extracted = txt.read_text(encoding="utf-8", errors="replace")
     if len(extracted.strip()) < 1000:
         raise SystemExit(f"Text extraction appears insufficient: {pdf}")
-    print(f"preflight ok: {pdf.name} ({pdf.stat().st_size} bytes, {len(extracted)} extracted chars)")
+    print(
+        f"preflight ok: {pdf.name} "
+        f"({pdf.stat().st_size} bytes, {len(extracted)} extracted chars)"
+    )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--strict", action="store_true", help="Fail when corresponding email is still a placeholder")
+    parser.add_argument(
+        "--strict", action="store_true",
+        help="Fail when corresponding email is still a placeholder",
+    )
     args = parser.parse_args()
 
-    meta = yaml.safe_load((PAPER / "jxiv_publication_metadata.yaml").read_text(encoding="utf-8"))
+    meta = yaml.safe_load(
+        (PAPER / "jxiv_publication_metadata.yaml").read_text(encoding="utf-8")
+    )
     email = os.getenv("AUTHOR_EMAIL", meta["corresponding_email"])
     if args.strict and ("REPLACE" in email or "@" not in email):
         raise SystemExit("AUTHOR_EMAIL must be supplied for a submission-ready PDF")
     if shutil.which("pandoc") is None or shutil.which("lualatex") is None:
         raise SystemExit("pandoc and lualatex are required")
 
+    render_figures()
     outputs = [build_one(meta, "en"), build_one(meta, "jp")]
     for output in outputs:
         preflight(output)

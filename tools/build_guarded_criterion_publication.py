@@ -185,9 +185,14 @@ def insert_figures(body: str, lang: str) -> str:
     return body
 
 
+def resolved_email(meta: dict[str, str]) -> str:
+    """Use a non-empty Actions secret when present, otherwise repository metadata."""
+    return os.getenv("AUTHOR_EMAIL") or meta["corresponding_email"]
+
+
 def title_block(meta: dict[str, str], lang: str) -> str:
     """Create Pandoc metadata and visible author/contact information."""
-    email = os.getenv("AUTHOR_EMAIL", meta["corresponding_email"])
+    email = resolved_email(meta)
     if lang == "en":
         metadata = {
             "title": meta["title_en"],
@@ -328,9 +333,11 @@ def main() -> int:
     meta = yaml.safe_load(
         (PAPER / "jxiv_publication_metadata.yaml").read_text(encoding="utf-8")
     )
-    email = os.getenv("AUTHOR_EMAIL", meta["corresponding_email"])
+    email = resolved_email(meta)
     if args.strict and ("REPLACE" in email or "@" not in email):
-        raise SystemExit("AUTHOR_EMAIL must be supplied for a submission-ready PDF")
+        raise SystemExit(
+            "A valid corresponding email must be supplied by AUTHOR_EMAIL or repository metadata"
+        )
     if shutil.which("pandoc") is None or shutil.which("lualatex") is None:
         raise SystemExit("pandoc and lualatex are required")
 

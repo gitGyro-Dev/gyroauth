@@ -27,6 +27,27 @@ base.FIGURE_INSERTION_TARGETS = {
 }
 
 
+FIGURE_WIDTHS = {
+    1: "95%",
+    2: "88%",
+    3: "95%",
+    4: "88%",
+    5: "82%",
+    6: "72%",
+}
+
+
+def figure_markdown(number: int, lang: str) -> str:
+    """Create publication figure markup with per-figure fit constraints."""
+    specs = {spec.number: spec for spec in base.parse_figure_source()}
+    caption = specs[number].caption_en if lang == "en" else base.JP_CAPTIONS[number]
+    width = FIGURE_WIDTHS[number]
+    return (
+        f"\n\n![{caption}](figures/figure_{number}.png)"
+        f"{{#fig:guarded-criterion-{number} width={width}}}\n\n"
+    )
+
+
 def insert_figures_in_publication_order(body: str, lang: str) -> str:
     """Insert Figure 1 through Figure 6 in canonical manuscript order."""
     for number in range(1, 7):
@@ -38,12 +59,13 @@ def insert_figures_in_publication_order(body: str, lang: str) -> str:
             )
         body = (
             body[: match.start()]
-            + base.figure_markdown(number, lang)
+            + figure_markdown(number, lang)
             + body[match.start() :]
         )
     return body
 
 
+base.figure_markdown = figure_markdown
 base.insert_figures = insert_figures_in_publication_order
 
 

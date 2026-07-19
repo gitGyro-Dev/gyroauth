@@ -28,24 +28,62 @@ base.FIGURE_INSERTION_TARGETS = {
 
 
 FIGURE_WIDTHS = {
-    1: "95%",
-    2: "88%",
-    3: "95%",
-    4: "88%",
-    5: "82%",
-    6: "72%",
+    1: 0.95,
+    2: 0.88,
+    3: 0.95,
+    4: 0.88,
+    5: 0.82,
+    6: 0.72,
 }
 
 
+def latex_escape(text: str) -> str:
+    """Escape caption text for raw LaTeX while preserving Unicode."""
+    text = text.replace("`", "")
+    replacements = {
+        "\\": r"\textbackslash{}",
+        "&": r"\&",
+        "%": r"\%",
+        "$": r"\$",
+        "#": r"\#",
+        "_": r"\_",
+        "{": r"\{",
+        "}": r"\}",
+        "~": r"\textasciitilde{}",
+        "^": r"\textasciicircum{}",
+    }
+    return "".join(replacements.get(char, char) for char in text)
+
+
 def figure_markdown(number: int, lang: str) -> str:
-    """Create publication figure markup with per-figure fit constraints."""
+    """Create a non-floating publication figure with explicit canonical numbering.
+
+    Pandoc's implicit figure environment can defer a late figure differently
+    between the English and Japanese documents. A centered, non-floating raw
+    LaTeX block guarantees that every rendered PNG is included exactly where
+    inserted and that source, artifact, caption, and PDF numbering remain equal.
+    """
     specs = {spec.number: spec for spec in base.parse_figure_source()}
     caption = specs[number].caption_en if lang == "en" else base.JP_CAPTIONS[number]
+    caption = latex_escape(caption)
+    image = (base.BUILD_FIGURES / f"figure_{number}.png").resolve().as_posix()
     width = FIGURE_WIDTHS[number]
-    return (
-        f"\n\n![{caption}](figures/figure_{number}.png)"
-        f"{{#fig:guarded-criterion-{number} width={width}}}\n\n"
-    )
+    label = f"fig:guarded-criterion-{number}"
+    figure_word = "Figure" if lang == "en" else "図"
+
+    return f"""
+
+```{{=latex}}
+\begin{{center}}
+\hypertarget{{{label}}}{{}}
+\includegraphics[width={width:.2f}\linewidth]{{{image}}}
+
+\vspace{{0.4em}}
+{{\small\textbf{{{figure_word} {number}.}} {caption}}}
+\end{{center}}
+```
+
+"""
 
 
 def insert_figures_in_publication_order(body: str, lang: str) -> str:

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -26,13 +27,18 @@ def run(cmd: list[str]) -> None:
 
 
 def strip_working_header(text: str) -> str:
+    """Remove the draft-only title and status lines from a manuscript."""
     lines = text.splitlines()
     out: list[str] = []
     skipping = True
     for line in lines:
         if skipping and line.startswith("# "):
             continue
-        if skipping and (line.startswith("**Author:") or line.startswith("**Project:") or line.startswith("**Manuscript status:")):
+        if skipping and (
+            line.startswith("**Author:")
+            or line.startswith("**Project:")
+            or line.startswith("**Manuscript status:")
+        ):
             continue
         if skipping and not line.strip():
             continue
@@ -41,31 +47,75 @@ def strip_working_header(text: str) -> str:
     return "\n".join(out).strip() + "\n"
 
 
+def normalize_submission_headings(text: str, lang: str) -> str:
+    """Convert draft headings into clean Pandoc section headings.
+
+    The manuscript sources retain explicit section numbers for readability on
+    GitHub. Publication PDFs use Pandoc's --number-sections instead, so those
+    manual prefixes are removed during the build. Heading levels are also
+    shifted up because the document title is supplied through metadata rather
+    than represented as a numbered H1 section.
+    """
+    normalized: list[str] = []
+    heading_re = re.compile(r"^(#{2,6})\s+(.+?)\s*$")
+    number_re = re.compile(r"^\d+(?:\.\d+)*\.?\s+")
+
+    abstract_title = "Abstract" if lang == "en" else "要旨"
+
+    for line in text.splitlines():
+        match = heading_re.match(line)
+        if not match:
+            normalized.append(line)
+            continue
+
+        hashes, title = match.groups()
+        title = number_re.sub("", title).strip()
+        new_hashes = "#" * (len(hashes) - 1)
+
+        if title == abstract_title:
+            normalized.append(f"{new_hashes} {title} {{.unnumbered}}")
+        else:
+            normalized.append(f"{new_hashes} {title}")
+
+    return "\n".join(normalized).strip() + "\n"
+
+
 def title_block(meta: dict[str, str], lang: str) -> str:
+    """Create Pandoc metadata and visible author/contact information."""
     email = os.getenv("AUTHOR_EMAIL", meta["corresponding_email"])
     if lang == "en":
-        return f"""# {meta['title_en']}
-
-**{meta['author_en']}**  
-{meta['affiliation_en']}  
-ORCID: {meta['orcid']}  
-Corresponding author: {email}
+        metadata = {
+            "title": meta["title_en"],
+            "author": meta["author_en"],
+            "keywords": meta["keywords_en"],
+            "lang": "en",
+        }
+        visible = f"""**Affiliation:** {meta['affiliation_en']}  
+**ORCID:** {meta['orcid']}  
+**Corresponding author:** {email}
 
 **Keywords:** {meta['keywords_en']}
 
 ---
 """
-    return f"""# {meta['title_jp']}
-
-**{meta['author_jp']}**  
-{meta['affiliation_jp']}  
-ORCID: {meta['orcid']}  
-責任著者連絡先: {email}
+    else:
+        metadata = {
+            "title": meta["title_jp"],
+            "author": meta["author_jp"],
+            "keywords": meta["keywords_jp"],
+            "lang": "ja",
+        }
+        visible = f"""**所属:** {meta['affiliation_jp']}  
+**ORCID:** {meta['orcid']}  
+**責任著者連絡先:** {email}
 
 **キーワード:** {meta['keywords_jp']}
 
 ---
 """
+
+    yaml_text = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False).strip()
+    return f"---\n{yaml_text}\n---\n\n{visible}"
 
 
 def append_required_statements(body: str, meta: dict[str, str], lang: str) -> str:
@@ -108,6 +158,7 @@ def build_one(meta: dict[str, str], lang: str) -> Path:
     src = PAPER / f"guarded_criterion_trajectories_submission_{lang}.md"
     body = strip_working_header(src.read_text(encoding="utf-8"))
     body = append_required_statements(body, meta, lang)
+    body = normalize_submission_headings(body, lang)
     merged = title_block(meta, lang) + "\n" + body
 
     BUILD.mkdir(parents=True, exist_ok=True)

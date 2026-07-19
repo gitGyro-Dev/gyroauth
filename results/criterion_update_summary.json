@@ -1,0 +1,102 @@
+{
+  "execution": {
+    "script": "scripts/simulate_guarded_criterion_update.py",
+    "scenarios": "examples/criterion_update/scenarios.json",
+    "command": "python scripts/simulate_guarded_criterion_update.py --scenarios examples/criterion_update/scenarios.json --output results/criterion_update_results.json",
+    "exit_code": 0,
+    "deterministic": true
+  },
+  "config": {
+    "eta_mu": 0.2,
+    "eta_width": 0.5,
+    "theta_cross": 0.65,
+    "theta_source": 0.6,
+    "max_center_shift": 0.08,
+    "max_width_change": 0.05,
+    "max_cumulative_width_expansion": 0.1,
+    "max_discrimination_loss": 0.06,
+    "suspicious_freeze_count": 2,
+    "attack_reference": 0.62,
+    "theta_fail": 0.28,
+    "theta_cont_fail": 0.25,
+    "theta_reauth": 0.55,
+    "theta_reconverge": 1.1
+  },
+  "summaries": [
+    {
+      "model": "U",
+      "scenario_id": "N1",
+      "final_mu": 0.24808,
+      "final_width": 0.12,
+      "final_state": "ADAPTING",
+      "attack_reference_admissible": false,
+      "freeze_stage": null,
+      "auth_decisions": ["REAUTH_REQUIRED", "AUTH_STABLE", "AUTH_STABLE"],
+      "criterion_responses": ["DIRECT_ADOPT", "DIRECT_ADOPT", "DIRECT_ADOPT"]
+    },
+    {
+      "model": "G",
+      "scenario_id": "N1",
+      "final_mu": 0.234,
+      "final_width": 0.12,
+      "final_state": "STABLE",
+      "attack_reference_admissible": false,
+      "freeze_stage": null,
+      "auth_decisions": ["REAUTH_REQUIRED", "AUTH_STABLE", "AUTH_STABLE"],
+      "criterion_responses": ["DEFER", "ACCEPT", "ACCEPT"]
+    },
+    {
+      "model": "U",
+      "scenario_id": "P1",
+      "final_mu": 0.3969728,
+      "final_width": 0.277212,
+      "final_state": "ADAPTING",
+      "attack_reference_admissible": true,
+      "freeze_stage": null,
+      "auth_decisions": ["RECONVERGING", "AUTH_STABLE", "REAUTH_REQUIRED", "REAUTH_REQUIRED", "REAUTH_REQUIRED"],
+      "criterion_responses": ["DIRECT_ADOPT", "DIRECT_ADOPT", "DIRECT_ADOPT", "DIRECT_ADOPT", "DIRECT_ADOPT"]
+    },
+    {
+      "model": "G",
+      "scenario_id": "P1",
+      "final_mu": 0.2,
+      "final_width": 0.12,
+      "final_state": "FROZEN",
+      "attack_reference_admissible": false,
+      "freeze_stage": 2,
+      "auth_decisions": ["RECONVERGING", "AUTH_STABLE", "AUTH_FAIL", "AUTH_FAIL", "AUTH_FAIL"],
+      "criterion_responses": ["DEFER", "FREEZE", "FREEZE", "FREEZE", "FREEZE"]
+    },
+    {
+      "model": "U",
+      "scenario_id": "C1",
+      "final_mu": 0.2328,
+      "final_width": 0.12,
+      "final_state": "ADAPTING",
+      "attack_reference_admissible": false,
+      "freeze_stage": null,
+      "auth_decisions": ["REAUTH_REQUIRED", "REAUTH_REQUIRED"],
+      "criterion_responses": ["DIRECT_ADOPT", "DIRECT_ADOPT"]
+    },
+    {
+      "model": "G",
+      "scenario_id": "C1",
+      "final_mu": 0.2,
+      "final_width": 0.12,
+      "final_state": "FROZEN",
+      "attack_reference_admissible": false,
+      "freeze_stage": 1,
+      "auth_decisions": ["REAUTH_REQUIRED", "REAUTH_REQUIRED"],
+      "criterion_responses": ["FREEZE", "FREEZE"]
+    }
+  ],
+  "assertions": [
+    {"name": "N1 guarded model eventually accepts supported adaptation", "passed": true},
+    {"name": "P1 unconstrained model makes attack reference admissible", "passed": true},
+    {"name": "P1 guarded model freezes criterion adaptation", "passed": true},
+    {"name": "P1 guarded model keeps attack reference non-admissible", "passed": true},
+    {"name": "C1 guarded model does not accept compromised source update", "passed": true},
+    {"name": "C1 guarded model freezes or reviews", "passed": true},
+    {"name": "Auth Decision and Criterion Update Response remain separate", "passed": true}
+  ]
+}

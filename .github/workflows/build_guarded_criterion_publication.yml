@@ -9,6 +9,7 @@ on:
       - "paper/jxiv_publication_metadata.yaml"
       - "figures/guarded_criterion_trajectories_mermaid.md"
       - "tools/build_guarded_criterion_publication.py"
+      - "tools/build_guarded_criterion_publication_aligned.py"
       - ".github/workflows/build_guarded_criterion_publication.yml"
 
 permissions:
@@ -56,15 +57,15 @@ jobs:
           chmod +x /tmp/mermaid-bin/mmdc
           echo "/tmp/mermaid-bin" >> "$GITHUB_PATH"
 
-      - name: Build figures and English and Japanese PDFs
+      - name: Build canonically numbered figures and publication PDFs
         env:
           AUTHOR_EMAIL: ${{ secrets.JXIV_CORRESPONDING_EMAIL }}
         run: |
           if [ -n "$AUTHOR_EMAIL" ]; then
-            python tools/build_guarded_criterion_publication.py --strict
+            python tools/build_guarded_criterion_publication_aligned.py --strict
           else
             echo "JXIV_CORRESPONDING_EMAIL is not configured; using the confirmed repository metadata value."
-            python tools/build_guarded_criterion_publication.py --strict
+            python tools/build_guarded_criterion_publication_aligned.py --strict
           fi
 
       - name: Inspect rendered figures
@@ -72,6 +73,11 @@ jobs:
           test "$(find dist/figures -maxdepth 1 -type f -name 'figure_*.svg' | wc -l)" -eq 6
           test "$(find dist/figures -maxdepth 1 -type f -name 'figure_*.png' | wc -l)" -eq 6
           test "$(find dist/figures -maxdepth 1 -type f -name 'figure_*.pdf' | wc -l)" -eq 6
+          for number in 1 2 3 4 5 6; do
+            test -s "dist/figures/figure_${number}.svg"
+            test -s "dist/figures/figure_${number}.png"
+            test -s "dist/figures/figure_${number}.pdf"
+          done
           find dist/figures -maxdepth 1 -type f -printf '%f %s bytes\n' | sort
 
       - name: Inspect PDF metadata, images, and text extraction

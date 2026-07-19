@@ -98,7 +98,7 @@ flowchart TB
 
 ```mermaid
 quadrantChart
-    title Auth Decision and Criterion Update Response are independent
+    title Auth and Criterion Decisions are Independent
     x-axis Criterion update blocked --> Criterion update allowed
     y-axis Current relation rejected --> Current relation accepted
     quadrant-1 AUTH_STABLE + ACCEPT

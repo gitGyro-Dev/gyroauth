@@ -37,6 +37,25 @@ jobs:
           npm install --global @mermaid-js/mermaid-cli@11.4.2
           mmdc --version
 
+      - name: Configure Mermaid browser for GitHub Actions
+        run: |
+          cat > /tmp/mermaid-puppeteer-config.json <<'EOF'
+          {
+            "args": [
+              "--no-sandbox",
+              "--disable-setuid-sandbox",
+              "--disable-dev-shm-usage"
+            ]
+          }
+          EOF
+          mkdir -p /tmp/mermaid-bin
+          cat > /tmp/mermaid-bin/mmdc <<'EOF'
+          #!/usr/bin/env bash
+          exec /usr/local/bin/mmdc "$@" -p /tmp/mermaid-puppeteer-config.json
+          EOF
+          chmod +x /tmp/mermaid-bin/mmdc
+          echo "/tmp/mermaid-bin" >> "$GITHUB_PATH"
+
       - name: Build figures and English and Japanese PDFs
         env:
           AUTHOR_EMAIL: ${{ secrets.JXIV_CORRESPONDING_EMAIL }}

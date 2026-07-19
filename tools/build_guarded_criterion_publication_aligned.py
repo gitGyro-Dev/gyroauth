@@ -71,7 +71,7 @@ def figure_markdown(number: int, lang: str) -> str:
     label = f"fig:guarded-criterion-{number}"
     figure_word = "Figure" if lang == "en" else "図"
 
-    return f"""
+    return rf"""
 
 ```{{=latex}}
 \begin{{center}}

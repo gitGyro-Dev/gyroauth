@@ -279,8 +279,9 @@ def build_one(meta: dict[str, str], lang: str) -> Path:
     out = DIST / f"guarded_criterion_trajectories_{lang}.pdf"
     common = [
         "pandoc", str(md), "-o", str(out),
-        "--from", "gfm+tex_math_dollars+link_attributes",
+        "--from", "markdown+tex_math_dollars+link_attributes+fenced_code_blocks+pipe_tables+strikeout+task_lists+autolink_bare_uris",
         "--pdf-engine=lualatex",
+        "--resource-path", str(BUILD),
         "--toc",
         "--number-sections",
         "-V", "papersize=a4",

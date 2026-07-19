@@ -7,6 +7,7 @@ on:
       - "paper/guarded_criterion_trajectories_submission_en.md"
       - "paper/guarded_criterion_trajectories_submission_jp.md"
       - "paper/jxiv_publication_metadata.yaml"
+      - "figures/guarded_criterion_trajectories_mermaid.md"
       - "tools/build_guarded_criterion_publication.py"
       - ".github/workflows/build_guarded_criterion_publication.yml"
 
@@ -33,8 +34,10 @@ jobs:
             fonts-noto-cjk \
             fonts-dejavu-core
           python -m pip install --disable-pip-version-check pyyaml
+          npm install --global @mermaid-js/mermaid-cli@11.4.2
+          mmdc --version
 
-      - name: Build English and Japanese PDFs
+      - name: Build figures and English and Japanese PDFs
         env:
           AUTHOR_EMAIL: ${{ secrets.JXIV_CORRESPONDING_EMAIL }}
         run: |
@@ -45,7 +48,14 @@ jobs:
             python tools/build_guarded_criterion_publication.py --strict
           fi
 
-      - name: Inspect PDF metadata and text extraction
+      - name: Inspect rendered figures
+        run: |
+          test "$(find dist/figures -maxdepth 1 -type f -name 'figure_*.svg' | wc -l)" -eq 6
+          test "$(find dist/figures -maxdepth 1 -type f -name 'figure_*.png' | wc -l)" -eq 6
+          test "$(find dist/figures -maxdepth 1 -type f -name 'figure_*.pdf' | wc -l)" -eq 6
+          find dist/figures -maxdepth 1 -type f -printf '%f %s bytes\n' | sort
+
+      - name: Inspect PDF metadata, images, and text extraction
         run: |
           pdfinfo dist/guarded_criterion_trajectories_en.pdf | tee /tmp/en_pdfinfo.txt
           pdfinfo dist/guarded_criterion_trajectories_jp.pdf | tee /tmp/jp_pdfinfo.txt
@@ -53,17 +63,22 @@ jobs:
           grep -qE '^Page size:.*A4' /tmp/jp_pdfinfo.txt
           test "$(stat -c%s dist/guarded_criterion_trajectories_en.pdf)" -lt 20971520
           test "$(stat -c%s dist/guarded_criterion_trajectories_jp.pdf)" -lt 20971520
+          test "$(pdfimages -list dist/guarded_criterion_trajectories_en.pdf | tail -n +3 | wc -l)" -ge 6
+          test "$(pdfimages -list dist/guarded_criterion_trajectories_jp.pdf | tail -n +3 | wc -l)" -ge 6
           pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "Guarded Criterion Trajectories"
           pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "dev.jxiv@gyro-wedge.com"
           pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "適応型認証"
           pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "dev.jxiv@gyro-wedge.com"
 
-      - name: Upload publication PDFs
+      - name: Upload publication package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: guarded-criterion-publication-pdfs
+          name: guarded-criterion-publication-package
           path: |
             dist/guarded_criterion_trajectories_en.pdf
             dist/guarded_criterion_trajectories_jp.pdf
+            dist/figures/figure_*.svg
+            dist/figures/figure_*.png
+            dist/figures/figure_*.pdf
           if-no-files-found: error
           retention-days: 30

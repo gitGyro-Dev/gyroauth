@@ -82,18 +82,60 @@ jobs:
 
       - name: Inspect PDF metadata, images, and text extraction
         run: |
-          pdfinfo dist/guarded_criterion_trajectories_en.pdf | tee /tmp/en_pdfinfo.txt
-          pdfinfo dist/guarded_criterion_trajectories_jp.pdf | tee /tmp/jp_pdfinfo.txt
-          grep -qE '^Page size:.*A4' /tmp/en_pdfinfo.txt
-          grep -qE '^Page size:.*A4' /tmp/jp_pdfinfo.txt
-          test "$(stat -c%s dist/guarded_criterion_trajectories_en.pdf)" -lt 20971520
-          test "$(stat -c%s dist/guarded_criterion_trajectories_jp.pdf)" -lt 20971520
-          test "$(pdfimages -list dist/guarded_criterion_trajectories_en.pdf | tail -n +3 | wc -l)" -ge 6
-          test "$(pdfimages -list dist/guarded_criterion_trajectories_jp.pdf | tail -n +3 | wc -l)" -ge 6
-          pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "Guarded Criterion Trajectories"
-          pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "dev.jxiv@gyro-wedge.com"
-          pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "適応型認証"
-          pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "dev.jxiv@gyro-wedge.com"
+          set -euo pipefail
+
+          EN_PDF=dist/guarded_criterion_trajectories_en.pdf
+          JP_PDF=dist/guarded_criterion_trajectories_jp.pdf
+
+          pdfinfo "$EN_PDF" | tee /tmp/en_pdfinfo.txt
+          pdfinfo "$JP_PDF" | tee /tmp/jp_pdfinfo.txt
+          pdftotext -layout "$EN_PDF" /tmp/en_text.txt
+          pdftotext -layout "$JP_PDF" /tmp/jp_text.txt
+          pdfimages -list "$EN_PDF" | tee /tmp/en_images.txt
+          pdfimages -list "$JP_PDF" | tee /tmp/jp_images.txt
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          limit = 20 * 1024 * 1024
+          email = "dev.jxiv@gyro-wedge.com"
+          checks = {
+              "en": {
+                  "pdf": Path("dist/guarded_criterion_trajectories_en.pdf"),
+                  "info": Path("/tmp/en_pdfinfo.txt"),
+                  "text": Path("/tmp/en_text.txt"),
+                  "images": Path("/tmp/en_images.txt"),
+                  "title": "Guarded Criterion Trajectories",
+              },
+              "jp": {
+                  "pdf": Path("dist/guarded_criterion_trajectories_jp.pdf"),
+                  "info": Path("/tmp/jp_pdfinfo.txt"),
+                  "text": Path("/tmp/jp_text.txt"),
+                  "images": Path("/tmp/jp_images.txt"),
+                  "title": "適応型認証",
+              },
+          }
+
+          for lang, item in checks.items():
+              info = item["info"].read_text(encoding="utf-8", errors="replace")
+              text = item["text"].read_text(encoding="utf-8", errors="replace")
+              compact = re.sub(r"\s+", " ", text)
+              image_lines = [
+                  line for line in item["images"].read_text(encoding="utf-8", errors="replace").splitlines()
+                  if re.match(r"^\s*\d+\s+\d+\s+", line)
+              ]
+
+              assert "Page size:" in info and "A4" in info, f"{lang}: PDF is not A4"
+              assert item["pdf"].stat().st_size < limit, f"{lang}: PDF exceeds 20 MiB"
+              assert len(image_lines) >= 6, f"{lang}: expected at least 6 embedded images, found {len(image_lines)}"
+              assert item["title"] in compact, f"{lang}: title text was not extracted"
+              assert email in compact, f"{lang}: corresponding email was not extracted"
+              print(
+                  f"{lang}: PASS; size={item['pdf'].stat().st_size}; "
+                  f"images={len(image_lines)}; title=yes; email=yes"
+              )
+          PY
 
       - name: Upload publication package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

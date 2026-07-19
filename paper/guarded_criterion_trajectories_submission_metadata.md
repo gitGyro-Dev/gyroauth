@@ -11,6 +11,15 @@ Guarded Criterion Trajectories for Adaptive Authentication
 **Author**  
 Shuntaro Kawakami
 
+**Affiliation**  
+Individual
+
+**ORCID**  
+0009-0004-0091-1303
+
+**Corresponding author email**  
+dev.jxiv@gyro-wedge.com
+
 **Keywords**  
 adaptive authentication; continuous authentication; criterion poisoning; guarded adaptation; criterion integrity; trajectory; GyroAuth
 
@@ -30,6 +39,15 @@ English
 
 **著者**  
 川上俊太郎
+
+**所属**  
+個人
+
+**ORCID**  
+0009-0004-0091-1303
+
+**責任著者連絡先**  
+dev.jxiv@gyro-wedge.com
 
 **キーワード**  
 適応型認証；継続認証；Criterion poisoning；Guard付き適応；Criterion Integrity；Trajectory；GyroAuth
@@ -104,7 +122,7 @@ AI-assisted tools were used for structural organization, drafting support, expre
 - [ ] Render figures to SVG/PDF
 - [ ] Insert rendered figures into final PDF source
 - [ ] Verify reference metadata against final publisher records
-- [ ] Confirm author affiliation and contact metadata
+- [x] Confirm author affiliation and contact metadata
 - [ ] Apply final jxiv template and page formatting
 - [ ] Generate English PDF
 - [ ] Generate Japanese PDF

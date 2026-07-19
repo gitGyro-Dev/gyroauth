@@ -145,7 +145,7 @@ jobs:
           cp dist/guarded_criterion_trajectories_en.pdf "$target_dir/guarded_criterion_trajectories_en.pdf"
           cp dist/guarded_criterion_trajectories_jp.pdf "$target_dir/guarded_criterion_trajectories_jp.pdf"
 
-          if git diff --quiet -- "$target_dir"; then
+          if [ -z "$(git status --porcelain -- "$target_dir")" ]; then
             echo "Publication PDFs are already up to date."
             exit 0
           fi

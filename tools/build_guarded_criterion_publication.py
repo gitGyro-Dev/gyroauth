@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import os
-import re
 import shutil
 import subprocess
 import sys
@@ -47,8 +46,8 @@ def title_block(meta: dict[str, str], lang: str) -> str:
     if lang == "en":
         return f"""# {meta['title_en']}
 
-**Shuntaro Kawakami**  
-Independent Researcher, Japan  
+**{meta['author_en']}**  
+{meta['affiliation_en']}  
 ORCID: {meta['orcid']}  
 Corresponding author: {email}
 
@@ -58,8 +57,8 @@ Corresponding author: {email}
 """
     return f"""# {meta['title_jp']}
 
-**川上俊太郎**  
-独立研究者（日本）  
+**{meta['author_jp']}**  
+{meta['affiliation_jp']}  
 ORCID: {meta['orcid']}  
 責任著者連絡先: {email}
 
@@ -167,7 +166,6 @@ def main() -> int:
     email = os.getenv("AUTHOR_EMAIL", meta["corresponding_email"])
     if args.strict and ("REPLACE" in email or "@" not in email):
         raise SystemExit("AUTHOR_EMAIL must be supplied for a submission-ready PDF")
-
     if shutil.which("pandoc") is None or shutil.which("lualatex") is None:
         raise SystemExit("pandoc and lualatex are required")
 

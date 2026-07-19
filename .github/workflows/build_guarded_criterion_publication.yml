@@ -1,0 +1,65 @@
+name: Build Guarded Criterion Publication PDFs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "paper/guarded_criterion_trajectories_submission_en.md"
+      - "paper/guarded_criterion_trajectories_submission_jp.md"
+      - "paper/jxiv_publication_metadata.yaml"
+      - "tools/build_guarded_criterion_publication.py"
+      - ".github/workflows/build_guarded_criterion_publication.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install publication toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            pandoc \
+            poppler-utils \
+            texlive-luatex \
+            texlive-lang-japanese \
+            texlive-latex-extra \
+            texlive-fonts-extra \
+            fonts-noto-cjk \
+            fonts-dejavu-core
+          python -m pip install --disable-pip-version-check pyyaml
+
+      - name: Build English and Japanese PDFs
+        env:
+          AUTHOR_EMAIL: ${{ secrets.JXIV_CORRESPONDING_EMAIL }}
+        run: |
+          if [ -n "$AUTHOR_EMAIL" ]; then
+            python tools/build_guarded_criterion_publication.py --strict
+          else
+            echo "JXIV_CORRESPONDING_EMAIL is not configured; generating review PDFs with a visible placeholder."
+            python tools/build_guarded_criterion_publication.py
+          fi
+
+      - name: Inspect PDF metadata and text extraction
+        run: |
+          pdfinfo dist/guarded_criterion_trajectories_en.pdf
+          pdfinfo dist/guarded_criterion_trajectories_jp.pdf
+          test "$(stat -c%s dist/guarded_criterion_trajectories_en.pdf)" -lt 20971520
+          test "$(stat -c%s dist/guarded_criterion_trajectories_jp.pdf)" -lt 20971520
+          pdftotext dist/guarded_criterion_trajectories_en.pdf - | grep -q "Guarded Criterion Trajectories"
+          pdftotext dist/guarded_criterion_trajectories_jp.pdf - | grep -q "適応型認証"
+
+      - name: Upload publication PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: guarded-criterion-publication-pdfs
+          path: |
+            dist/guarded_criterion_trajectories_en.pdf
+            dist/guarded_criterion_trajectories_jp.pdf
+          if-no-files-found: error
+          retention-days: 30

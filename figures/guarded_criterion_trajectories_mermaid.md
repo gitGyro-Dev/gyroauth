@@ -1,6 +1,8 @@
 # Guarded Criterion Trajectories — Figure Sources
 
-This file contains editable Mermaid sources for the submission manuscript.
+This file contains the canonical editable Mermaid sources for the submission manuscript.
+
+Figure numbers follow the order in which the figures appear in the English and Japanese publication PDFs. The number in each heading, rendered filename, caption, manuscript reference, and PDF figure sequence must remain identical.
 
 ## Figure 1. Dual Evaluation Architecture
 
@@ -19,7 +21,21 @@ flowchart LR
 
 **Caption:** GyroAuth evaluates the current Authentication Relation and the integrity of the criterion used for future evaluation as separate but related processes.
 
-## Figure 2. Guarded Criterion Update Pipeline
+## Figure 2. Research Positioning
+
+```mermaid
+flowchart LR
+    AA[Adaptive / Risk-Based Authentication] --> P[Guarded Criterion Trajectories]
+    CA[Continuous Authentication] --> P
+    CD[Concept Drift] --> P
+    DP[Data Poisoning / Adversarial ML] --> P
+    ZT[Zero Trust Context] --> P
+    P --> X[Independent Authorization of Future Criterion Change]
+```
+
+**Caption:** The proposal is positioned at the intersection of adaptive authentication, continuous authentication, drift handling, and poisoning-aware adaptation.
+
+## Figure 3. Guarded Criterion Update Pipeline
 
 ```mermaid
 flowchart LR
@@ -36,7 +52,7 @@ flowchart LR
 
 **Caption:** Candidate generation and candidate adoption are separated. Only `ACCEPT` makes the candidate effective.
 
-## Figure 3. Criterion Update State Machine
+## Figure 4. Criterion Update State Machine
 
 ```mermaid
 stateDiagram-v2
@@ -60,7 +76,7 @@ stateDiagram-v2
 
 **Caption:** Criterion States and Criterion Update Responses are distinct. `FREEZE` stops adaptation without necessarily terminating Subject Evaluation.
 
-## Figure 4. P1 Direct versus Guarded Update
+## Figure 5. P1 Direct versus Guarded Update
 
 ```mermaid
 flowchart TB
@@ -78,7 +94,7 @@ flowchart TB
 
 **Caption:** Under the implemented P1 scenario, direct adoption expanded the criterion until the attack reference became admissible, while guarded adoption froze adaptation before admission.
 
-## Figure 5. Decision-space Separation
+## Figure 6. Decision-space Separation
 
 ```mermaid
 quadrantChart
@@ -93,27 +109,25 @@ quadrantChart
 
 **Caption:** `AUTH_STABLE + FREEZE` represents temporary continuation of the current Authentication Relation while prohibiting criterion adaptation.
 
-## Figure 6. Research Positioning
+## Canonical Publication Order
 
-```mermaid
-flowchart LR
-    AA[Adaptive / Risk-Based Authentication] --> P[Guarded Criterion Trajectories]
-    CA[Continuous Authentication] --> P
-    CD[Concept Drift] --> P
-    DP[Data Poisoning / Adversarial ML] --> P
-    ZT[Zero Trust Context] --> P
-    P --> X[Independent Authorization of Future Criterion Change]
+```text
+Figure 1  Dual Evaluation Architecture
+Figure 2  Research Positioning
+Figure 3  Guarded Criterion Update Pipeline
+Figure 4  Criterion Update State Machine
+Figure 5  P1 Direct versus Guarded Update
+Figure 6  Decision-space Separation
 ```
-
-**Caption:** The proposal is positioned at the intersection of adaptive authentication, continuous authentication, drift handling, and poisoning-aware adaptation.
 
 ## Rendering Notes
 
 For publication:
 
-1. render each figure to SVG and PDF;
-2. use consistent typography with the manuscript;
-3. preserve monochrome readability;
-4. ensure line and label sizes remain legible at single-column width;
-5. replace Mermaid-specific styling if required by the submission venue;
-6. verify that Figure 5 is supported by the selected Mermaid renderer; if not, redraw it as a conventional 2×2 matrix.
+1. render each figure to SVG, PNG, and PDF;
+2. use filenames `figure_1` through `figure_6` according to the canonical publication order above;
+3. use consistent typography with the manuscript;
+4. preserve monochrome readability;
+5. ensure line and label sizes remain legible at single-column width;
+6. replace Mermaid-specific styling if required by the submission venue;
+7. verify that Figure 6 is supported by the selected Mermaid renderer; if not, redraw it as a conventional 2×2 matrix.

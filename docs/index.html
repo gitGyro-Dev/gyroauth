@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="GyroAuth deterministic research demo for guarded authentication-criterion updates.">
+  <title>GyroAuth Research Demo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#demo">Skip to demo</a>
+
+  <header class="site-header">
+    <div class="shell">
+      <p class="eyebrow">GyroAuth Research Demo</p>
+      <h1>Current access and future criterion change are separate decisions.</h1>
+      <p class="lede">
+        GyroAuth evaluates whether the current authentication relation may continue while independently deciding whether its future criterion may change.
+      </p>
+      <div class="link-row" aria-label="Project links">
+        <a href="https://github.com/gitGyro-Dev/gyroauth">GitHub Repository</a>
+        <a href="https://github.com/gitGyro-Dev/gyroauth/releases/tag/v2.0.0">Latest Release</a>
+        <span class="status-chip">Jxiv: Under review</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="demo" class="shell" tabindex="-1">
+    <section class="principles" aria-labelledby="principles-title">
+      <h2 id="principles-title">Core distinctions</h2>
+      <div class="principle-grid">
+        <div class="principle-card">
+          <span>Auth Decision</span>
+          <strong>!=</strong>
+          <span>Criterion Update Response</span>
+        </div>
+        <div class="principle-card">
+          <span>dynamic criterion</span>
+          <strong>!=</strong>
+          <span>unconstrained self-update</span>
+        </div>
+        <div class="principle-card">
+          <span>valid events</span>
+          <strong>!=</strong>
+          <span>stable trajectory</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="controls" aria-labelledby="scenario-title">
+      <div>
+        <p class="eyebrow">Scenario</p>
+        <h2 id="scenario-title">Choose a deterministic PoC case</h2>
+      </div>
+      <div id="scenario-buttons" class="scenario-buttons" role="group" aria-label="Scenario selection"></div>
+    </section>
+
+    <section class="architecture" aria-labelledby="architecture-title">
+      <h2 id="architecture-title">Dual evaluation structure</h2>
+      <div class="architecture-flow" role="img" aria-label="Observed Access Trajectory branches into Subject Evaluation and Criterion Integrity Evaluation">
+        <div class="flow-source">Observed Access Trajectory</div>
+        <div class="flow-branches">
+          <div class="flow-card">
+            <span>Subject Evaluation</span>
+            <strong>Auth Decision</strong>
+          </div>
+          <div class="flow-card">
+            <span>Criterion Integrity Evaluation</span>
+            <strong>Criterion Update Response</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-grid" aria-live="polite" aria-atomic="false">
+      <article class="panel stage-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Current stage</p>
+            <h2 id="stage-title">Stage</h2>
+          </div>
+          <span id="stage-count" class="stage-count"></span>
+        </div>
+
+        <dl class="metrics">
+          <div>
+            <dt>Auth Decision</dt>
+            <dd id="auth-decision"></dd>
+          </div>
+          <div>
+            <dt>Criterion Update Response</dt>
+            <dd id="criterion-response"></dd>
+          </div>
+          <div>
+            <dt>Current Criterion Center</dt>
+            <dd id="criterion-center"></dd>
+          </div>
+          <div>
+            <dt>Current Criterion Width</dt>
+            <dd id="criterion-width"></dd>
+          </div>
+          <div>
+            <dt>Attack Reference Admissible</dt>
+            <dd id="attack-admissible"></dd>
+          </div>
+          <div>
+            <dt>Criterion State</dt>
+            <dd id="criterion-state"></dd>
+          </div>
+        </dl>
+
+        <div class="stage-controls">
+          <button id="previous-stage" type="button">Previous stage</button>
+          <button id="next-stage" type="button">Next stage</button>
+        </div>
+      </article>
+
+      <article class="panel highlight-panel" id="combination-panel">
+        <p class="eyebrow">Independent result</p>
+        <h2 id="combination-title"></h2>
+        <p id="combination-copy"></p>
+        <div id="guard-explanation" class="guard-explanation"></div>
+      </article>
+    </section>
+
+    <section class="panel timeline-panel" aria-labelledby="timeline-title">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Progression</p>
+          <h2 id="timeline-title">Scenario timeline</h2>
+        </div>
+      </div>
+      <ol id="timeline" class="timeline"></ol>
+    </section>
+
+    <section class="panel comparison-panel" aria-labelledby="comparison-title">
+      <p class="eyebrow">Outcome comparison</p>
+      <h2 id="comparison-title">Direct update versus guarded update</h2>
+      <div class="comparison-grid">
+        <div>
+          <h3>Direct update</h3>
+          <dl class="compact-metrics">
+            <div><dt>Final center</dt><dd id="direct-center"></dd></div>
+            <div><dt>Final width</dt><dd id="direct-width"></dd></div>
+            <div><dt>Attack reference</dt><dd id="direct-attack"></dd></div>
+          </dl>
+        </div>
+        <div>
+          <h3>Guarded update</h3>
+          <dl class="compact-metrics">
+            <div><dt>Final center</dt><dd id="guarded-center"></dd></div>
+            <div><dt>Final width</dt><dd id="guarded-width"></dd></div>
+            <div><dt>Attack reference</dt><dd id="guarded-attack"></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice" aria-label="Research disclaimer">
+      <strong>Research demonstration only.</strong>
+      <p>This is a deterministic research demonstration. It is not a production authentication service or a security guarantee.</p>
+      <p>Simulation source != generated demo data. Demo visualization != security guarantee.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <p>GyroAuth — Authentication by Stability-based Selection over State Convergence.</p>
+    </div>
+  </footer>
+
+  <script src="scenarios.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,7 +1,27 @@
 ## 🚀 Latest Release
 
-GyroAuth v2.0 (PoC)  
-https://github.com/gitGyro-Dev/gyroauth/releases/tag/v2.0.0
+**GyroAuth v2.1.0 — Guarded Criterion Trajectories and Research Demo**  
+Release notes: [`release_candidates/gyroauth/v2.1.0/release_notes.md`](release_candidates/gyroauth/v2.1.0/release_notes.md)
+
+## ▶ Live Demo
+
+https://gitgyro-dev.github.io/gyroauth/
+
+The static research demo visualizes:
+
+```text
+Auth Decision
+!=
+Criterion Update Response
+```
+
+including the executable state:
+
+```text
+AUTH_STABLE + FREEZE
+```
+
+Jxiv status for the Guarded Criterion Trajectories English manuscript: **Under review**.
 
 # GyroAuth vNext
 

@@ -1,6 +1,7 @@
 ## 🚀 Latest Release
 
-**GyroAuth v2.1.0 — Guarded Criterion Trajectories and Research Demo**  
+[**GyroAuth v2.1.0 — Guarded Criterion Trajectories and Research Demo**](https://github.com/gitGyro-Dev/gyroauth/releases/tag/v2.1.0)
+
 Release notes: [`release_candidates/gyroauth/v2.1.0/release_notes.md`](release_candidates/gyroauth/v2.1.0/release_notes.md)
 
 ## ▶ Live Demo

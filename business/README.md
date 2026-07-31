@@ -1,5 +1,7 @@
 # GyroAuth Business / PoC
 
+[日本語版はこちら / Japanese version](README_ja.md)
+
 This directory is the working area for the practical application, commercialization, collaborative research, and proof-of-concept development of GyroAuth.
 
 このディレクトリは、GyroAuthの実用化、事業化、共同研究、PoC獲得を検討・管理するための作業領域です。
@@ -42,6 +44,26 @@ A separate repository should be considered only when one or more of the followin
 - the business artifacts develop an independent release cycle;
 - external collaborators require restricted access;
 - product operations become materially separate from the research repository.
+
+## Language Policy
+
+README files, overview documents, and customer-facing explanatory materials should have Japanese versions.
+
+Recommended naming:
+
+```text
+README.md
+README_ja.md
+
+example.md
+example_ja.md
+```
+
+Temporary internal notes and working logs do not require translation unless they are reused for external explanation.
+
+The primary Japanese customer-facing overview is:
+
+- [`README_ja.md`](README_ja.md)
 
 ## Layer Boundary
 
@@ -90,12 +112,16 @@ Therefore, the initial offer should not be a production authentication service. 
 ```text
 business/
 ├── README.md
+├── README_ja.md
 ├── strategy/
 │   ├── positioning.md
 │   ├── roadmap.md
-│   └── repository_split_criteria.md
+│   ├── repository_split_criteria.md
+│   └── market_use_case_assessment.md
 ├── poc/
 │   ├── README.md
+│   ├── README_ja.md
+│   ├── privileged_access_poc_package.md
 │   ├── offline_log_evaluation.md
 │   └── evaluation_framework.md
 ├── deliverables/
@@ -106,10 +132,10 @@ business/
 
 ## Initial Priorities
 
-1. Define one-sentence positioning for each target audience.
-2. Rank the first three market and use-case candidates.
-3. Select one primary PoC.
-4. Prepare a one-page company-facing technical overview.
+1. Maintain the Japanese customer-facing overview.
+2. Complete the privileged-access PoC package.
+3. Prepare a one-page company-facing technical overview.
+4. Define the minimum log schema and sample data.
 5. Improve the public demo so it connects research understanding to a PoC inquiry.
 
 ## Source of Truth

@@ -57,9 +57,9 @@ Higher is better for all criteria except responsibility risk, where a higher sco
 
 | Rank | Candidate field | Total / 50 | Current judgment |
 |---:|---|---:|---|
-| 1 | Privileged access | 39 | Primary target |
-| 2 | VPN / ZTNA | 38 | Primary target |
-| 3 | AI Agent governance | 35 | Exploratory primary target |
+| 1 | Privileged access | 39 | First concrete PoC target |
+| 2 | VPN / ZTNA | 38 | Second validation target |
+| 3 | AI Agent governance | 35 | Exploratory differentiation target |
 | 4 | IoT / OT | 31 | Partner-dependent secondary target |
 | 5 | General continuous authentication | 29 | Too broad for initial positioning |
 | 6 | Financial transactions | 24 | Defer due to validation and liability requirements |
@@ -115,6 +115,29 @@ Should this behavior update the future baseline?
 
 This is the strongest current match for `AUTH_STABLE + FREEZE`. A session can remain operational while suspicious baseline expansion, evidence-source degradation, or unusual privilege use is held for review.
 
+## Why it is selected as the first concrete PoC
+
+Privileged access is narrower and more controllable than VPN / ZTNA for the first external package.
+
+The first PoC can be limited to:
+
+- a small number of privileged identities;
+- a defined administrative system or resource group;
+- selected session and operation logs;
+- a fixed observation period;
+- offline reconstruction or Shadow Mode;
+- no production blocking and no direct baseline modification.
+
+This bounded scope reduces the number of environmental variables that must be modeled at the outset. It avoids making the first PoC depend heavily on physical location, mobile networks, endpoint posture, network routing, proxy behavior, and other remote-access context.
+
+The value proposition is also easier to state:
+
+```text
+A privileged credential was accepted.
+Did the authenticated administrative session continue as the same expected relation?
+And should the observed behavior be allowed to alter the future baseline?
+```
+
 ## Strong points
 
 - consequences of account misuse are easy to explain;
@@ -122,7 +145,9 @@ This is the strongest current match for `AUTH_STABLE + FREEZE`. A session can re
 - Shadow Mode avoids immediate interference with production access;
 - review and audit outputs have direct operational meaning;
 - guarded criterion updates can be positioned as an additional control rather than a replacement for PAM, IAM, or SIEM;
-- a limited user group can be selected for PoC.
+- a limited user group can be selected for PoC;
+- scope can be restricted to one system, one role group, or one maintenance process;
+- customer-side review can validate findings without delegating blocking authority to GyroAuth.
 
 ## Critical weaknesses
 
@@ -130,7 +155,8 @@ This is the strongest current match for `AUTH_STABLE + FREEZE`. A session can re
 - customers may view GyroAuth as another behavioral risk score unless the update-control distinction is demonstrated clearly;
 - operation events are application-specific and require normalization;
 - privileged-access buyers expect high reliability, traceability, and responsibility boundaries;
-- a single developer should not initially provide real-time blocking or fail-close enforcement.
+- a single developer should not initially provide real-time blocking or fail-close enforcement;
+- expected administrative behavior may vary significantly by role, incident, maintenance window, and emergency procedure.
 
 ## Initial PoC position
 
@@ -141,7 +167,7 @@ Privileged-session log evaluation
 → offline findings and Shadow Mode review candidates
 ```
 
-The first PoC should not terminate sessions or modify production authentication criteria.
+The first PoC should not terminate sessions, change permissions, or modify production authentication criteria.
 
 ## Paid-PoC likelihood
 
@@ -158,9 +184,23 @@ Moderate. The problem is serious, but an unknown research project will usually n
 - cloud management access;
 - changes in device, location, network, and session context.
 
-## Why it ranks second
+## Why it remains second
 
-VPN and ZTNA provide the easiest explanation of trajectory-based authentication. Normal users change devices, networks, and locations, while attackers may gradually imitate observed behavior or expand an accepted region. The available telemetry is comparatively standardized, and an offline PoC can be conducted without changing the authentication path.
+VPN and ZTNA provide a recognizable explanation of trajectory-based authentication. Normal users change devices, networks, and locations, while attackers may gradually imitate observed behavior or expand an accepted region. The available telemetry may be comparatively standardized, and an offline PoC can be conducted without changing the authentication path.
+
+However, the initial scope becomes wider more quickly than privileged access. A meaningful evaluation may involve several interacting layers:
+
+- identity and authentication events;
+- endpoint and device posture;
+- source network and routing context;
+- location and geolocation quality;
+- VPN or ZTNA session lifecycle;
+- application and resource access;
+- step-up authentication;
+- proxies, mobile networks, roaming, and legitimate travel;
+- privacy-sensitive contextual information.
+
+This makes VPN / ZTNA suitable as the second validation package after the minimum GyroAuth PoC workflow, log-normalization process, review output, and evaluation report have been established with privileged access.
 
 ## Strong points
 
@@ -176,7 +216,8 @@ VPN and ZTNA provide the easiest explanation of trajectory-based authentication.
 - vendors may already provide proprietary behavioral and device-risk models;
 - location and network data can be noisy, privacy-sensitive, or distorted by proxies and mobile networks;
 - without real error-rate evidence, GyroAuth cannot claim superior detection;
-- customers may ask why existing IdP or ZTNA rules cannot reproduce the same behavior.
+- customers may ask why existing IdP or ZTNA rules cannot reproduce the same behavior;
+- combining multiple physical, network, endpoint, and identity signals increases normalization and interpretation cost.
 
 ## Initial PoC position
 
@@ -191,7 +232,7 @@ The differentiator must be the explicit separation of current access continuity 
 
 ## Paid-PoC likelihood
 
-Moderate. It is easy to understand and execute, but buyers may expect the function to be supplied by their current vendor. Partner-led validation is preferable.
+Moderate. It is easy to understand at a high level, but the actual evaluation scope can expand rapidly. Partner-led validation is preferable.
 
 # 3. AI Agent Governance
 
@@ -311,9 +352,9 @@ Defer until GyroAuth has validated metrics, broader engineering support, and a s
 
 # Selected Initial Three
 
-## 1. Privileged Access — primary operational target
+## 1. Privileged Access — first concrete PoC target
 
-This is the strongest combination of problem severity, bounded PoC scope, explainability, and direct relevance of guarded criterion updates.
+This is the strongest combination of problem severity, bounded scope, explainability, and direct relevance of guarded criterion updates.
 
 ### Initial hypothesis
 
@@ -328,9 +369,9 @@ GyroAuth can identify privileged sessions that may continue under existing contr
 - managed security providers;
 - large-company research and innovation divisions.
 
-## 2. VPN / ZTNA — primary validation target
+## 2. VPN / ZTNA — second validation target
 
-This is the easiest field for obtaining recognizable logs and explaining normal environmental change, suspicious drift, re-authentication, and Shadow Mode comparison.
+This remains a strong field for obtaining recognizable logs and explaining normal environmental change, suspicious drift, re-authentication, and Shadow Mode comparison. It should follow the privileged-access PoC rather than compete with it for the first package.
 
 ### Initial hypothesis
 
@@ -363,37 +404,60 @@ GyroAuth can evaluate whether an agent's current execution remains acceptable wh
 
 # Portfolio Rule
 
-The three selected fields have different roles:
+The three selected fields now have explicit priority and different roles:
 
 ```text
 Privileged Access
-= strongest operational problem
+= first concrete PoC package
 
 VPN / ZTNA
-= easiest external validation path
+= second validation package after the PoC method is established
 
 AI Agent Governance
-= strongest exploratory differentiation
+= bounded exploratory differentiation track
 ```
-
-They should not receive equal near-term resources.
 
 Recommended initial allocation:
 
 | Track | Relative effort |
 |---|---:|
-| Privileged access | 40% |
-| VPN / ZTNA | 40% |
-| AI Agent governance | 20% |
+| Privileged access | 60% |
+| VPN / ZTNA | 25% |
+| AI Agent governance | 15% |
 
-# Immediate Next Decisions
+# First PoC Decision
 
-1. Select either privileged access or VPN / ZTNA as the first concrete PoC package.
-2. Define the minimum log schema for that field.
-3. Create one customer-facing problem statement and one architecture diagram.
-4. Define a comparison baseline using existing rules or decisions.
-5. Specify measurable success criteria without claiming production security effectiveness.
-6. Keep AI Agent work as a bounded research and partner-discovery track until a real data owner or sponsor appears.
+The first concrete GyroAuth PoC package is fixed as:
+
+```text
+Privileged Access
++ offline log evaluation
++ optional Shadow Mode comparison
++ no production enforcement
+```
+
+## Reasons
+
+1. The subject population and monitored systems can be limited.
+2. Administrative operations provide a clearer bounded trajectory than broad remote-access context.
+3. The security consequence of session misuse is understandable without explaining the entire Gyro theory.
+4. `AUTH_STABLE + FREEZE` has a concrete operational interpretation.
+5. Existing PAM, IAM, SIEM, and system logs can be used without replacing those systems.
+6. Findings can be reviewed by the customer before any operational action is considered.
+7. The first implementation can avoid physical-location, mobile-network, endpoint-posture, and routing complexity.
+
+## Required next artifacts
+
+1. Privileged-access PoC purpose and problem statement.
+2. Target customer and target-system boundary.
+3. Minimum input-log schema.
+4. Event normalization and trajectory-construction rules.
+5. PoC architecture and data flow.
+6. Baseline comparison method.
+7. Success criteria and evaluation metrics.
+8. Explicit non-goals and responsibility boundary.
+9. Deliverables and report structure.
+10. Indicative schedule and pricing logic.
 
 # Go / No-Go Conditions
 

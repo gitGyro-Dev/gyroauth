@@ -1,6 +1,16 @@
 # GyroAuth PoC Workspace
 
+[日本語版はこちら / Japanese version](README_ja.md)
+
 This directory defines PoC packages, scope, evidence, metrics, constraints, and transition conditions.
+
+## Language Policy
+
+README files, overview documents, and customer-facing PoC explanations should have Japanese versions. Detailed internal specifications may remain in one language when a maintained Japanese overview provides the customer-facing explanation and links to the source document.
+
+The Japanese PoC entry point is:
+
+- [`README_ja.md`](README_ja.md)
 
 ## First Concrete PoC
 
@@ -59,9 +69,10 @@ No transition to production enforcement occurs automatically between these stage
 
 ## Supporting Documents
 
+- [`README_ja.md`](README_ja.md) — Japanese customer-facing PoC overview
 - [`offline_log_evaluation.md`](offline_log_evaluation.md) — general offline-evaluation model
 - [`evaluation_framework.md`](evaluation_framework.md) — common evaluation principles and evidence framework
-- [`privileged_access_poc_package.md`](privileged_access_poc_package.md) — first customer-facing PoC package
+- [`privileged_access_poc_package.md`](privileged_access_poc_package.md) — first detailed PoC package
 
 ## Required PoC Definition
 

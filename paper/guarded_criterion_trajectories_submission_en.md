@@ -305,7 +305,7 @@ DEFER != FREEZE
 REVIEW != DEFER
 ```
 
-Figure specifications for the dual evaluation architecture, guarded pipeline, state machine, and model comparison are provided in `figures/guarded_criterion_trajectories_mermaid.md`.
+Figures 1-6 in this manuscript are rendered from the canonical specifications in `figures/guarded_criterion_trajectories_mermaid.md`. The source file is provided for reproducibility; the rendered figures are embedded directly in the publication PDF.
 
 ---
 
@@ -531,7 +531,7 @@ unconstrained self-update
 
 [14] S. Kawakami, “GyroAuth: Authentication as Stability-Based Selection over State Convergence,” Jxiv, DOI: 10.51094/jxiv.4600.
 
-[15] S. Kawakami, “GyroAuth：状態収束に対する安定性に基づく認証,” Jxiv, DOI: 10.51094/jxiv.5341.
+[15] S. Kawakami, “GyroAuth (Japanese edition): Authentication as Stability-Based Selection over State Convergence,” Jxiv, DOI: 10.51094/jxiv.5341.
 
 [16] S. Kawakami, “Trajectory-Based Vulnerability Response,” Jxiv, DOI: 10.51094/jxiv.5416.
 

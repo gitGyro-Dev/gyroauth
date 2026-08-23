@@ -4,6 +4,15 @@
 
 Release notes: [`release_candidates/gyroauth/v2.1.0/release_notes.md`](release_candidates/gyroauth/v2.1.0/release_notes.md)
 
+## 📄 Publication
+
+**Guarded Criterion Trajectories for Adaptive Authentication** has been published on Jxiv.
+
+- Jxiv: https://doi.org/10.51094/jxiv.5671
+- Status: Published
+
+Content review and improvement are handled separately from this publication-status update.
+
 ## ▶ Live Demo
 
 https://gitgyro-dev.github.io/gyroauth/
@@ -21,8 +30,6 @@ including the executable state:
 ```text
 AUTH_STABLE + FREEZE
 ```
-
-Jxiv status for the Guarded Criterion Trajectories English manuscript: **Under review**.
 
 # GyroAuth vNext
 

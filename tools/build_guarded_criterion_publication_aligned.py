@@ -18,7 +18,7 @@ base.JP_CAPTIONS = {
     3: "Candidate生成とCandidate採用を分離する。Candidateを有効化するのはACCEPTのみである。",
     4: "Criterion StateとCriterion Update Responseは異なる。FREEZEはSubject Evaluationを必ずしも終了させず、適応経路を停止する。",
     5: "実装したP1 Scenarioでは、直接採用は攻撃参照値が許容されるまでCriterionを拡張した一方、Guard付き採用は許容前に適応を凍結した。",
-    6: "AUTH_STABLE + FREEZEは、現在のAuthentication Relationを一時的に継続しながら、Criterion適応を禁止する状態を表す。",
+    6: "AUTH_STABLE + FREEZEは、現在のAuthentication Relationを一時的に継続しながら、Criterion適応を禁止する状態を表す。AUTH_FAIL + ACCEPTは無効な組合せである。",
 }
 
 base.FIGURE_INSERTION_TARGETS = {

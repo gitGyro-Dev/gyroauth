@@ -55,23 +55,30 @@ flowchart LR
 ## Figure 4. Criterion Update State Machine
 
 ```mermaid
-stateDiagram-v2
-    [*] --> STABLE
-    STABLE --> ADAPTING: ACCEPT
-    STABLE --> UNCERTAIN: DEFER
-    STABLE --> FROZEN: FREEZE
-    STABLE --> UNDER_REVIEW: REVIEW
-    ADAPTING --> STABLE: validated ACCEPT
-    ADAPTING --> UNCERTAIN: DEFER
-    ADAPTING --> FROZEN: FREEZE
-    UNCERTAIN --> ADAPTING: supported candidate
-    UNCERTAIN --> UNDER_REVIEW: REVIEW
-    FROZEN --> UNDER_REVIEW: REVIEW
-    FROZEN --> ROLLED_BACK: ROLLBACK
-    COMPROMISED --> ROLLED_BACK: ROLLBACK
-    UNDER_REVIEW --> STABLE: externally validated
-    UNDER_REVIEW --> COMPROMISED: contamination confirmed
-    ROLLED_BACK --> STABLE: validated operation
+flowchart TB
+    STABLE[STABLE]
+    ADAPTING[ADAPTING]
+    UNCERTAIN[UNCERTAIN]
+    FROZEN[FROZEN]
+    UNDER_REVIEW[UNDER_REVIEW]
+    COMPROMISED[COMPROMISED]
+    ROLLED_BACK[ROLLED_BACK]
+
+    STABLE -->|ACCEPT| ADAPTING
+    STABLE -->|DEFER| UNCERTAIN
+    STABLE -->|FREEZE| FROZEN
+    STABLE -->|REVIEW| UNDER_REVIEW
+    ADAPTING -->|validated ACCEPT| STABLE
+    ADAPTING -->|DEFER| UNCERTAIN
+    ADAPTING -->|FREEZE| FROZEN
+    UNCERTAIN -->|supported candidate| ADAPTING
+    UNCERTAIN -->|REVIEW| UNDER_REVIEW
+    FROZEN -->|REVIEW| UNDER_REVIEW
+    FROZEN -->|ROLLBACK| ROLLED_BACK
+    COMPROMISED -->|ROLLBACK| ROLLED_BACK
+    UNDER_REVIEW -->|externally validated| STABLE
+    UNDER_REVIEW -->|contamination confirmed| COMPROMISED
+    ROLLED_BACK -->|validated operation| STABLE
 ```
 
 **Caption:** Criterion States and Criterion Update Responses are distinct. `FREEZE` stops adaptation without necessarily terminating Subject Evaluation.

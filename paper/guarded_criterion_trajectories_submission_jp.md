@@ -328,14 +328,10 @@ Observation
 
 最小Criterion表現は次である。
 
-$
-A_t = \left(
-\begin{aligned}
-&\mu_t,\ \mathrm{width}_t,\ \mathrm{provenance\_requirement}_t,\\
-&\mathrm{challenge\_requirement}_t,\ \mathrm{rollback\_integrity}_t
-\end{aligned}
-\right)
-$
+```text
+A_t = (mu_t, width_t, provenance_requirement_t,
+       challenge_requirement_t, rollback_integrity_t)
+```
 
 実装はPython standard libraryのみを使用し、SyntheticかつDeterministicなInputを用いる。
 

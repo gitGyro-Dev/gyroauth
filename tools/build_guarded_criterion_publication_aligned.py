@@ -163,6 +163,8 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
             + "\n      " + r"\renewcommand{\thesubsection}{\thesection.\number\c@subsection}"
             + "\n      " + r"\renewcommand{\thepage}{\number\c@page}"
             + "\n      " + r"\makeatother"
+            + "\n      " + r"\let\gyroOriginalTOC\tableofcontents"
+            + "\n      " + r"\renewcommand{\tableofcontents}{\begingroup\small\gyroOriginalTOC\endgroup}"
         )
     return block.replace(closing_front_matter, header + closing_front_matter, 1)
 

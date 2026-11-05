@@ -175,7 +175,8 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     block = _original_title_block(meta, lang)
     closing_front_matter = "\n---\n\n"
     header = "\nheader-includes:\n  - |\n      \\usepackage{graphicx}"
-    header += "\n      " + r"\emergencystretch=2em"\n    header += "\n      " + r"\usepackage{pdflscape}"
+    header += "\n      " + r"\emergencystretch=2em"
+    header += "\n      " + r"\usepackage{pdflscape}"
     if closing_front_matter not in block:
         raise SystemExit("Could not locate Pandoc metadata front matter terminator")
     if lang == "jp":

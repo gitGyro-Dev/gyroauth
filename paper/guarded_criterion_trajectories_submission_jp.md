@@ -257,11 +257,14 @@ D_crit_t = Pi_crit(G_t, Q_t, H_t)
 
 Effective Criterionの遷移は次である。
 
-```text
-A_(t+1) = A*_(t+1)   when ACCEPT
-A_(t+1) = A_t        when DEFER / FREEZE / REVIEW
-A_(t+1) = A_tau      when ROLLBACK, tau < t
-```
+\[
+A_{t+1} =
+\begin{cases}
+A^{*}_{t+1} & \text{when ACCEPT},\\
+A_t & \text{when DEFER / FREEZE / REVIEW},\\
+A_{\tau} & \text{when ROLLBACK, }\tau < t.
+\end{cases}
+\]
 
 Subject Evaluationは独立して次を選択する。
 

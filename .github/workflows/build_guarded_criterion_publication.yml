@@ -15,6 +15,11 @@ on:
 permissions:
   contents: write
 
+# Keep publication builds serial and supersede stale commits.
+concurrency:
+  group: guarded-criterion-publication-main
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -154,7 +159,23 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$target_dir"
           git commit -m "Add final guarded criterion publication PDFs"
-          git push origin HEAD:main
+
+          # Concurrent repository updates can make HEAD stale. Rebase and
+          # retry without force-pushing or discarding unrelated commits.
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push attempt $attempt rejected; fetching latest main."
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort || true
+              echo "Rebase conflict; refusing to overwrite remote changes."
+              exit 1
+            fi
+          done
+          echo "Unable to publish PDFs after three push attempts."
+          exit 1
 
       - name: Upload publication package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

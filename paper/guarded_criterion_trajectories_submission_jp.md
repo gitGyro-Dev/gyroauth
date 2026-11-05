@@ -314,7 +314,7 @@ DEFER != FREEZE
 REVIEW != DEFER
 ```
 
-図1〜図6はPDF本文に直接埋め込まれている。再現用の図仕様は公開リポジトリの[Mermaid図仕様ファイル](https://github.com/gitGyro-Dev/gyroauth/blob/main/figures/guarded_criterion_trajectories_mermaid.md)に格納する。
+図1〜図6の再現用仕様は公開リポジトリの[Mermaid図仕様ファイル](https://github.com/gitGyro-Dev/gyroauth/blob/main/figures/guarded_criterion_trajectories_mermaid.md)に格納している。
 
 ---
 

@@ -112,10 +112,10 @@ quadrantChart
     quadrant-1 AUTH_STABLE + ACCEPT
     quadrant-2 AUTH_STABLE + FREEZE
     quadrant-3 AUTH_FAIL + ROLLBACK
-    quadrant-4 AUTH_FAIL + ACCEPT is invalid
+    quadrant-4 AUTH_FAIL + ACCEPT
 ```
 
-**Caption:** `AUTH_STABLE + FREEZE` represents temporary continuation of the current Authentication Relation while prohibiting criterion adaptation.
+**Caption:** `AUTH_STABLE + FREEZE` represents temporary continuation of the current Authentication Relation while prohibiting criterion adaptation. The lower-right combination, `AUTH_FAIL + ACCEPT`, is invalid.
 
 ## Canonical Publication Order
 

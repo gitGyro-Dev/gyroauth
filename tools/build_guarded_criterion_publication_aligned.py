@@ -28,12 +28,12 @@ base.FIGURE_INSERTION_TARGETS = {
 
 
 FIGURE_WIDTHS = {
-    1: 0.95,
+    1: 1.00,
     2: 0.88,
-    3: 0.95,
-    4: 0.88,
+    3: 1.00,
+    4: 0.82,
     5: 0.82,
-    6: 0.72,
+    6: 0.78,
 }
 
 
@@ -96,13 +96,13 @@ def figure_markdown(number: int, lang: str) -> str:
     specs = {spec.number: spec for spec in base.parse_figure_source()}
     caption = specs[number].caption_en if lang == "en" else base.JP_CAPTIONS[number]
     caption = latex_escape(caption)
-    image = (base.BUILD_FIGURES / f"figure_{number}.png").resolve().as_posix()
+    image = (base.BUILD_FIGURES / f"figure_{number}.pdf").resolve().as_posix()
     width = FIGURE_WIDTHS[number]
     label = f"fig:guarded-criterion-{number}"
     figure_word = "Figure" if lang == "en" else "図"
 
-    begin_container = r"\begin{minipage}{\linewidth}" if lang == "jp" and number == 1 else ""
-    end_container = r"\end{minipage}" if lang == "jp" and number == 1 else ""
+    begin_container = r"\begin{minipage}{\linewidth}"
+    end_container = r"\end{minipage}"
     return rf"""
 
 ```{{=latex}}

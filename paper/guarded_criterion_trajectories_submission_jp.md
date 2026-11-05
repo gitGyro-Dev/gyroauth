@@ -10,6 +10,10 @@
 
 **キーワード:** 適応型認証、継続認証、Criterion poisoning、Guard付き適応、Criterion Integrity、Trajectory、GyroAuth
 
+**英語原版との関係:** 本稿は、Kawakami, S. (2026), “Guarded Criterion Trajectories for Adaptive Authentication: Separating Current Access Decisions from Future Criterion Updates,” Jxiv, DOI: 10.51094/jxiv.5671（2026年8月17日公開）の日本語翻訳版である。技術的主張、モデル、数式、図およびPoC結果に実質的変更はない。翻訳に伴う用語・表記の調整と、投稿に必要な公開先・使用ツール等の書誌情報の補足を行っている。英語原版は参考文献[14]に掲げる。
+
+**日英混在表記の方針:** GyroAuth固有の概念、状態名、評価応答および実装上の識別子は、原版・ソースコードとの対応と再現可能性を保つため英語表記を原則として維持する。一般的な説明は日本語で記述し、必要に応じて英語の専門用語を併記する。
+
 ---
 
 ## 1. はじめに
@@ -89,7 +93,7 @@ GyroAuth     = Authentication Application
 
 本研究は、Gyro Logic Coreである`Structure → Slice → Stability`やGyroOS runtime contractを再定義しない。拡張対象はGyroAuth application layerの評価範囲である。
 
-基礎GyroAuth論文は認証モデルそのものを定義する[14], [15]。Trajectory-Based Vulnerability Response論文は、ログイン後の操作とSecurity responseへTrajectory評価を適用する[16], [17]。本稿は、Authentication Criterionおよびその更新過程のIntegrityを対象とする。
+基礎GyroAuth論文は認証モデルそのものを定義する[10], [11]。Trajectory-Based Vulnerability Response論文は、ログイン後の操作とSecurity responseへTrajectory評価を適用する[12], [13]。本稿は、Authentication Criterionおよびその更新過程のIntegrityを対象とする。
 
 ### 2.2 Digital authenticationとZero Trust
 
@@ -113,9 +117,9 @@ Behavioral biometricsはEvidenceとなり得るが、Behavioral featureはIdenti
 
 ### 2.4 Concept driftとPoisoning
 
-Concept drift研究は、時間とともに変化するData distributionへの適応を扱う[8]。これらの手法はCriterion Update Candidateの生成に利用できるが、Security-sensitiveな用途では、観測されたDriftをすべて正当な変化と仮定できない。
+Concept drift研究は、時間とともに変化するData distributionへの適応を扱う[7]。これらの手法はCriterion Update Candidateの生成に利用できるが、Security-sensitiveな用途では、観測されたDriftをすべて正当な変化と仮定できない。
 
-Poisoning研究は、攻撃者がTraining dataやAdaptation dataを操作し、将来のModel behaviorを変更できることを示している[10], [13]。本稿では、この問題をAuthentication固有の状態遷移問題として扱い、Current subject decision、Future criterion adoption、Criterion state、Update response、Rollback linkageを分離する。
+Poisoning研究は、攻撃者がTraining dataやAdaptation dataを操作し、将来のModel behaviorを変更できることを示している[8], [9]。本稿では、この問題をAuthentication固有の状態遷移問題として扱い、Current subject decision、Future criterion adoption、Criterion state、Update response、Rollback linkageを分離する。
 
 したがって、新規性主張は次の範囲に限定する。
 
@@ -307,7 +311,7 @@ DEFER != FREEZE
 REVIEW != DEFER
 ```
 
-図のSourceは`figures/guarded_criterion_trajectories_mermaid.md`に格納する。
+図1〜図6はPDF本文に直接埋め込まれており、図のSourceは再現性のため`figures/guarded_criterion_trajectories_mermaid.md`に格納する。
 
 ---
 
@@ -352,6 +356,8 @@ scripts/simulate_guarded_criterion_update.py
 examples/criterion_update/scenarios.json
 results/criterion_update_summary.json
 ```
+
+`results/criterion_update_summary.json`は公開済みの結果概要である。一方、11節の`results/criterion_update_results.json`はシミュレーション実行時に書き出す詳細結果であり、両者は用途の異なるファイルである。公開先は https://github.com/gitGyro-Dev/gyroauth である。
 
 Scenarioは次である。
 
@@ -493,7 +499,7 @@ python scripts/simulate_guarded_criterion_update.py \
   --output results/criterion_update_results.json
 ```
 
-Repositoryには、Simulation source、Scenario input、Summary result、Formalization document、Figure sourceを含む。
+公開GyroAuthリポジトリ（https://github.com/gitGyro-Dev/gyroauth）には、Simulation source、Scenario input、結果概要（`results/criterion_update_summary.json`）、Formalization document、Figure sourceを含む。上のコマンドが生成する`results/criterion_update_results.json`は詳細結果の出力先であり、結果概要とは別ファイルである。
 
 ---
 
@@ -525,22 +531,25 @@ unconstrained self-update
 
 [6] A. Al Abdulwahid, N. Clarke, I. Stengel, S. Furnell, and C. Reich, “Security, Privacy, and Usability in Continuous Authentication: A Survey,” *Sensors*, vol. 21, no. 17, 5967, 2021. DOI: 10.3390/s21175967.
 
-[8] J. Gama, I. Žliobaitė, A. Bifet, M. Pechenizkiy, and A. Bouchachia, “A Survey on Concept Drift Adaptation,” *ACM Computing Surveys*, vol. 46, no. 4, Article 44, 2014. DOI: 10.1145/2523813.
+[7] J. Gama, I. {\refnamelatin Žliobaitė}, A. Bifet, M. Pechenizkiy, and A. Bouchachia, “A Survey on Concept Drift Adaptation,” *ACM Computing Surveys*, vol. 46, no. 4, Article 44, 2014. DOI: 10.1145/2523813.
 
-[10] B. Biggio, B. Nelson, and P. Laskov, “Poisoning Attacks against Support Vector Machines,” in *Proceedings of the 29th International Conference on Machine Learning*, 2012, pp. 1467–1474.
+[8] B. Biggio, B. Nelson, and P. Laskov, “Poisoning Attacks against Support Vector Machines,” in *Proceedings of the 29th International Conference on Machine Learning*, 2012, pp. 1467–1474.
 
-[13] A. Vassilev, A. Oprea, A. Fordyce, H. Anderson, X. Davies, and M. Hamin, *Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations*, NIST AI 100-2e2025, 2025. DOI: 10.6028/NIST.AI.100-2e2025.
+[9] A. Vassilev, A. Oprea, A. Fordyce, H. Anderson, X. Davies, and M. Hamin, *Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations*, NIST AI 100-2e2025, 2025. DOI: 10.6028/NIST.AI.100-2e2025.
 
-[14] S. Kawakami, “GyroAuth: Authentication as Stability-Based Selection over State Convergence,” Jxiv, DOI: 10.51094/jxiv.4600.
+[10] S. Kawakami, “GyroAuth: Authentication as Stability-Based Selection over State Convergence,” Jxiv, DOI: 10.51094/jxiv.4600.
 
-[15] S. Kawakami, “GyroAuth：状態収束に対する安定性に基づく認証,” Jxiv, DOI: 10.51094/jxiv.5341.
+[11] S. Kawakami, “GyroAuth：状態収束に対する安定性に基づく認証,” Jxiv, DOI: 10.51094/jxiv.5341.
 
-[16] S. Kawakami, “Trajectory-Based Vulnerability Response,” Jxiv, DOI: 10.51094/jxiv.5416.
+[12] S. Kawakami, “Trajectory-Based Vulnerability Response,” Jxiv, DOI: 10.51094/jxiv.5416.
 
-[17] S. Kawakami, “Trajectoryに基づく脆弱性対応,” Jxiv, DOI: 10.51094/jxiv.5440.
+[13] S. Kawakami, “Trajectoryに基づく脆弱性対応,” Jxiv, DOI: 10.51094/jxiv.5440.
+
+
+[14] S. Kawakami, “Guarded Criterion Trajectories for Adaptive Authentication: Separating Current Access Decisions from Future Criterion Updates,” Jxiv, 2026年8月17日公開. DOI: 10.51094/jxiv.5671.
 
 ---
 
 ## AI支援ツールの使用
 
-本稿の構成整理、草稿作成補助、表現調整、整合性確認にAI支援ツールを使用した。著者は本文、主張、参考文献、最終原稿を確認・編集し、その内容に全責任を負う。
+本稿の構成整理、草稿作成補助、表現調整、整合性確認にAI支援ツール（OpenAIのChatGPT）を使用した。著者は本文、主張、参考文献、最終原稿を確認・編集し、その内容に全責任を負う。

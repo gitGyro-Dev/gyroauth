@@ -144,6 +144,10 @@ _original_title_block = base.title_block
 
 def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     """Ensure raw LaTeX figure blocks have the graphicx command definitions."""
+    if lang == "jp":
+        meta = dict(meta)
+        # Markdown hard break in Pandoc YAML title; avoid raw LaTeX in metadata.
+        meta["title_jp"] = meta["title_jp"].replace("：", "：  \n", 1)
     block = _original_title_block(meta, lang)
     closing_front_matter = "\n---\n\n"
     header = "\nheader-includes:\n  - |\n      \\usepackage{graphicx}"

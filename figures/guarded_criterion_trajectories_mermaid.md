@@ -55,6 +55,7 @@ flowchart LR
 ## Figure 4. Criterion Update State Machine
 
 ```mermaid
+%%{init: {"flowchart": {"nodeSpacing": 70, "rankSpacing": 90, "curve": "basis"}}}%%
 flowchart TB
     STABLE[STABLE]
     ADAPTING[ADAPTING]

@@ -164,7 +164,7 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
             + "\n      " + r"\renewcommand{\thepage}{\number\c@page}"
             + "\n      " + r"\makeatother"
             + "\n      " + r"\let\gyroOriginalTOC\tableofcontents"
-            + "\n      " + r"\renewcommand{\tableofcontents}{\begingroup\small\gyroOriginalTOC\endgroup}"
+            + "\n      " + r"\renewcommand{\tableofcontents}{\begingroup\fontsize{9}{10}\selectfont\gyroOriginalTOC\endgroup}"
         )
     return block.replace(closing_front_matter, header + closing_front_matter, 1)
 

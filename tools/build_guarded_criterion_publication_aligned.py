@@ -105,6 +105,28 @@ def figure_markdown(number: int, lang: str) -> str:
     label = f"fig:guarded-criterion-{number}"
     figure_word = "Figure" if lang == "en" else "図"
 
+    if number == 3:
+        # Give the original left-to-right Figure 3 a dedicated landscape page.
+        # pdflscape rotates the PDF page for on-screen reading and printing.
+        return rf"""
+
+```{{=latex}}
+\clearpage
+\begin{{landscape}}
+\thispagestyle{{plain}}
+\begin{{center}}
+\hypertarget{{{label}}}{{}}
+\includegraphics[width=0.96\linewidth,height=0.76\textheight,keepaspectratio]{{{image}}}
+
+\vspace{{0.8em}}
+{{\small\textbf{{{figure_word} {number}.}} {caption}}}
+\end{{center}}
+\end{{landscape}}
+\clearpage
+```
+
+"""
+
     begin_container = r"\begin{minipage}{\linewidth}"
     end_container = r"\end{minipage}"
     return rf"""
@@ -153,7 +175,7 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     block = _original_title_block(meta, lang)
     closing_front_matter = "\n---\n\n"
     header = "\nheader-includes:\n  - |\n      \\usepackage{graphicx}"
-    header += "\n      " + r"\emergencystretch=2em"
+    header += "\n      " + r"\emergencystretch=2em"\n    header += "\n      " + r"\usepackage{pdflscape}"
     if closing_front_matter not in block:
         raise SystemExit("Could not locate Pandoc metadata front matter terminator")
     if lang == "jp":

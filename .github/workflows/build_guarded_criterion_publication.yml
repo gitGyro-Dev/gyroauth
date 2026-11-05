@@ -39,7 +39,7 @@ jobs:
             texlive-fonts-extra \
             fonts-noto-cjk \
             fonts-dejavu-core
-          python -m pip install --disable-pip-version-check pyyaml
+          python -m pip install --disable-pip-version-check pyyaml pymupdf
           npm install --global @mermaid-js/mermaid-cli@11.4.2
           mmdc --version
 

@@ -357,7 +357,19 @@ examples/criterion_update/scenarios.json
 results/criterion_update_summary.json
 ```
 
-`results/criterion_update_summary.json`は公開済みの結果概要である。一方、11節の`results/criterion_update_results.json`はシミュレーション実行時に書き出す詳細結果であり、両者は用途の異なるファイルである。公開先は https://github.com/gitGyro-Dev/gyroauth である。
+公開済みの結果概要ファイルは次のとおりである。
+
+```text
+results/criterion_update_summary.json
+```
+
+11節の実行コマンドが生成する詳細結果ファイルは次のとおりである。
+
+```text
+results/criterion_update_results.json
+```
+
+両者は用途の異なるファイルである。公開先は https://github.com/gitGyro-Dev/gyroauth である。
 
 Scenarioは次である。
 

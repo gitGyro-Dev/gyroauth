@@ -542,13 +542,13 @@ unconstrained self-update
 
 [4] R. Chandramouli and Z. Butcher, *A Zero Trust Architecture Model for Access Control in Cloud-Native Applications in Multi-Cloud Environments*, NIST SP 800-207A, 2023. DOI: 10.6028/NIST.SP.800-207A.
 
-[5] M. Abuhamad, A. Abusnaina, D. Nyang, and D. Mohaisen, “Sensor-Based Continuous Authentication of Smartphones’ Users Using Behavioral Biometrics: A Contemporary Survey,” *IEEE Internet of Things Journal*, vol. 8, no. 1, pp. \mbox{65--84}, 2021. DOI: 10.1109/JIOT.2020.3020076.
+[5] M. Abuhamad, A. Abusnaina, D. Nyang, and D. Mohaisen, “Sensor-Based Continuous Authentication of Smartphones’ Users Using Behavioral Biometrics: A Contemporary Survey,” *IEEE Internet of Things Journal*, vol. 8, no. 1, pp. 65–84, 2021. DOI: 10.1109/JIOT.2020.3020076.
 
 [6] A. Al Abdulwahid, N. Clarke, I. Stengel, S. Furnell, and C. Reich, “Security, Privacy, and Usability in Continuous Authentication: A Survey,” *Sensors*, vol. 21, no. 17, 5967, 2021. DOI: 10.3390/s21175967.
 
 [7] J. Gama, I. \referenceauthor{Žliobaitė}, A. Bifet, M. Pechenizkiy, and A. Bouchachia, “A Survey on Concept Drift Adaptation,” *ACM Computing Surveys*, vol. 46, no. 4, Article 44, 2014. DOI: 10.1145/2523813.
 
-[8] B. Biggio, B. Nelson, and P. Laskov, “Poisoning Attacks against Support Vector Machines,” in *Proceedings of the 29th International Conference on Machine Learning*, 2012, pp. \mbox{1467--1474}.
+[8] B. Biggio, B. Nelson, and P. Laskov, “Poisoning Attacks against Support Vector Machines,” in *Proceedings of the 29th International Conference on Machine Learning*, 2012, pp. 1467–1474.
 
 [9] A. Vassilev, A. Oprea, A. Fordyce, H. Anderson, X. Davies, and M. Hamin, *Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations*, NIST AI 100-2e2025, 2025. DOI: 10.6028/NIST.AI.100-2e2025.
 

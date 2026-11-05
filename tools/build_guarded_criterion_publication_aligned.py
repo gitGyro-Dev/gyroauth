@@ -150,6 +150,7 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     if lang == "jp":
         header += (
             "\n      " + r"\newfontfamily\refnamelatin{DejaVu Serif}"
+            + "\n      " + r"\newcommand{\referenceauthor}[1]{{\refnamelatin #1}}"
             + "\n      " + r"\makeatletter"
             + "\n      " + r"\renewcommand{\thesection}{\number\c@section}"
             + "\n      " + r"\renewcommand{\thesubsection}{\thesection.\number\c@subsection}"
@@ -159,10 +160,28 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     return block.replace(closing_front_matter, header + closing_front_matter, 1)
 
 
+
+_original_normalize = base.normalize_submission_headings
+
+
+def normalize_with_ascii_scenario_labels(text: str, lang: str) -> str:
+    """Keep scenario identifiers N1/P1/C1 in Latin digits in Japanese headings/TOC."""
+    normalized = _original_normalize(text, lang)
+    if lang == "jp":
+        normalized = re.sub(
+            r"^(##)\s+(N1|P1|C1):",
+            lambda m: f"{m.group(1)} " + r"\texttt{" + m.group(2) + "}:",
+            normalized,
+            flags=re.MULTILINE,
+        )
+    return normalized
+
+
 base.parse_figure_source = parse_figure_source
 base.figure_markdown = figure_markdown
 base.insert_figures = insert_figures_in_publication_order
 base.title_block = title_block_with_graphics
+base.normalize_submission_headings = normalize_with_ascii_scenario_labels
 
 
 if __name__ == "__main__":

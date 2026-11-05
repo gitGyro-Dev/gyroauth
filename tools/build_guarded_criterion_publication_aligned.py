@@ -101,9 +101,12 @@ def figure_markdown(number: int, lang: str) -> str:
     label = f"fig:guarded-criterion-{number}"
     figure_word = "Figure" if lang == "en" else "図"
 
+    begin_container = r"\begin{minipage}{\linewidth}" if lang == "jp" and number == 1 else ""
+    end_container = r"\end{minipage}" if lang == "jp" and number == 1 else ""
     return rf"""
 
 ```{{=latex}}
+{begin_container}
 \begin{{center}}
 \hypertarget{{{label}}}{{}}
 \includegraphics[width={width:.2f}\linewidth]{{{image}}}
@@ -111,6 +114,7 @@ def figure_markdown(number: int, lang: str) -> str:
 \vspace{{0.4em}}
 {{\small\textbf{{{figure_word} {number}.}} {caption}}}
 \end{{center}}
+{end_container}
 ```
 
 """
@@ -143,6 +147,15 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     header = "\nheader-includes:\n  - |\n      \\usepackage{graphicx}"
     if closing_front_matter not in block:
         raise SystemExit("Could not locate Pandoc metadata front matter terminator")
+    if lang == "jp":
+        header += (
+            "\n      " + r"\newfontfamily\refnamelatin{DejaVu Serif}"
+            + "\n      " + r"\makeatletter"
+            + "\n      " + r"\renewcommand{\thesection}{\number\c@section}"
+            + "\n      " + r"\renewcommand{\thesubsection}{\thesection.\number\c@subsection}"
+            + "\n      " + r"\renewcommand{\thepage}{\number\c@page}"
+            + "\n      " + r"\makeatother"
+        )
     return block.replace(closing_front_matter, header + closing_front_matter, 1)
 
 

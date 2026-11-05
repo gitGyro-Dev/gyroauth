@@ -254,7 +254,9 @@ def append_required_statements(body: str, meta: dict[str, str], lang: str) -> st
 
 **倫理および個人データ。** {meta['ethics_jp']}
 
-**コードおよびデータの公開。** 本研究で使用したソースコード、決定論的シナリオ入力、結果概要は公開GyroAuthリポジトリ（https://github.com/gitGyro-Dev/gyroauth）で提供する。本研究は合成入力を使用し、個人の認証テレメトリを含まない。
+**コードおよびデータの公開。** 本研究で使用したソースコード、決定論的シナリオ入力、結果概要は、公開[GyroAuthリポジトリ](https://github.com/gitGyro-Dev/gyroauth)で提供する。
+
+本研究は合成入力を使用し、個人の認証テレメトリを含まない。
 
 **AI支援ツールの使用。** 構成整理、草稿作成補助、表現調整、整合性確認のためにAI支援ツール（OpenAIのChatGPT）を使用した。本文、主張、参考文献および最終原稿は著者が確認・編集し、全責任を負う。
 """

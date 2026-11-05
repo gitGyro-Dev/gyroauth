@@ -259,7 +259,7 @@ def append_required_statements(body: str, meta: dict[str, str], lang: str) -> st
 
 **コードおよびデータの公開。** 本研究で使用したソースコード、決定論的シナリオ入力、結果概要は、公開[GyroAuthリポジトリ](https://github.com/gitGyro-Dev/gyroauth)で提供する。
 
-本研究は合成入力を使用し、個人の認証テレメトリを含まない。
+
 
 
 """

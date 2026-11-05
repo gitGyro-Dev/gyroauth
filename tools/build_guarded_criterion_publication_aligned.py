@@ -151,8 +151,6 @@ def title_block_with_graphics(meta: dict[str, str], lang: str) -> str:
     if closing_front_matter not in block:
         raise SystemExit("Could not locate Pandoc metadata front matter terminator")
     if lang == "jp":
-        header += "\n      " + r"\\renewcommand{\\contentsname}{目次}"
-        header += "\n      " + r"\\renewcommand{\\thepage}{\\arabic{page}}"
     if lang == "jp":
         header += (
             "\n      " + r"\newfontfamily\refnamelatin{DejaVu Serif}"

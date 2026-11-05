@@ -38,7 +38,7 @@ flowchart LR
 ## Figure 3. Guarded Criterion Update Pipeline
 
 ```mermaid
-%%{init: {"flowchart": {"nodeSpacing": 90, "rankSpacing": 110, "curve": "basis"}}}%%
+%%{init: {"flowchart": {"nodeSpacing": 48, "rankSpacing": 48, "curve": "basis"}}}%%
 flowchart LR
     O[Observation / Context / History] --> U[Candidate Generator U]
     U --> C[Criterion Update Candidate]

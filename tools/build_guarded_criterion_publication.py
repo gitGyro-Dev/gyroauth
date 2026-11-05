@@ -223,6 +223,9 @@ def title_block(meta: dict[str, str], lang: str) -> str:
 
 ---
 """
+    if lang == "jp":
+        # The manuscript already prints keywords immediately after the abstract.
+        visible = visible.replace("**キーワード:** " + meta["keywords_jp"] + "\\n\\n", "")
     yaml_text = yaml.safe_dump(metadata, allow_unicode=True, sort_keys=False).strip()
     return f"---\n{yaml_text}\n---\n\n{visible}"
 

@@ -73,8 +73,8 @@ flowchart TB
     ADAPTING -->|DEFER| UNCERTAIN
     ADAPTING -->|FREEZE| FROZEN
     UNCERTAIN -->|supported candidate| ADAPTING
-    UNCERTAIN -->|REVIEW from UNCERTAIN| UNDER_REVIEW
-    FROZEN -->|REVIEW from FROZEN| UNDER_REVIEW
+    UNCERTAIN -->|REVIEW (U)| UNDER_REVIEW
+    FROZEN -->|REVIEW (F)| UNDER_REVIEW
     FROZEN -->|ROLLBACK| ROLLED_BACK
     COMPROMISED -->|ROLLBACK| ROLLED_BACK
     UNDER_REVIEW -->|externally validated| STABLE
@@ -82,7 +82,7 @@ flowchart TB
     ROLLED_BACK -->|validated operation| STABLE
 ```
 
-**Caption:** Criterion States and Criterion Update Responses are distinct. `FREEZE` stops adaptation without necessarily terminating Subject Evaluation.
+**Caption:** Criterion States and Criterion Update Responses are distinct. `REVIEW (U)` means UNCERTAIN to UNDER_REVIEW; `REVIEW (F)` means FROZEN to UNDER_REVIEW. `FREEZE` stops adaptation without necessarily terminating Subject Evaluation.
 
 ## Figure 5. P1 Direct versus Guarded Update
 

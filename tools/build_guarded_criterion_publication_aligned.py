@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import re
 import sys
+import shutil
+import subprocess
 
 import fitz
 
@@ -207,8 +209,60 @@ def trim_figure_pdf_margins() -> None:
 
 _original_render = base.render_figures
 
+# Figure 4 uses a controlled Graphviz layout. All 7 states and 15 original
+# transitions are preserved; long return edges do not constrain node ranks.
+FIGURE_4_DOT = r"""
+digraph CriterionUpdate {
+  graph [rankdir=TB, bgcolor="white", nodesep=1.0, ranksep=1.25,
+         splines=polyline, pad=0.25, outputorder=edgesfirst];
+  node [shape=box, style="filled", fillcolor="#F3F3F3",
+        color="#888888", fontname="DejaVu Sans", fontsize=15,
+        margin="0.24,0.17"];
+  edge [color="#777777", fontcolor="#222222",
+        fontname="DejaVu Sans", fontsize=11, arrowsize=0.65];
+  STABLE; ADAPTING; UNCERTAIN; FROZEN; UNDER_REVIEW;
+  COMPROMISED; ROLLED_BACK;
+  {rank=same; FROZEN; UNCERTAIN;}
+  STABLE -> ADAPTING [label="ACCEPT"];
+  STABLE -> UNCERTAIN [label="DEFER"];
+  STABLE -> FROZEN [label="FREEZE"];
+  STABLE -> UNDER_REVIEW [label="REVIEW", constraint=false];
+  ADAPTING -> STABLE [label="validated ACCEPT", constraint=false];
+  ADAPTING -> UNCERTAIN [label="DEFER"];
+  ADAPTING -> FROZEN [label="FREEZE"];
+  UNCERTAIN -> ADAPTING [label="supported candidate", constraint=false];
+  UNCERTAIN -> UNDER_REVIEW [label="REVIEW-U", tailport=s, headport=ne];
+  FROZEN -> UNDER_REVIEW [label="REVIEW-F", tailport=s, headport=nw];
+  FROZEN -> ROLLED_BACK [label="ROLLBACK", constraint=false];
+  COMPROMISED -> ROLLED_BACK [label="ROLLBACK"];
+  UNDER_REVIEW -> STABLE [label="externally validated", constraint=false];
+  UNDER_REVIEW -> COMPROMISED [label="contamination confirmed"];
+  ROLLED_BACK -> STABLE [label="validated operation", constraint=false];
+}
+"""
+
 def render_tight_figures() -> None:
-    _original_render()
+    if shutil.which("dot") is None:
+        raise SystemExit("Graphviz dot is required to render Figure 4")
+    original_parser = base.parse_figure_source
+    try:
+        # Other five figures retain the established Mermaid renderer.
+        base.parse_figure_source = lambda: [
+            spec for spec in original_parser() if spec.number != 4
+        ]
+        _original_render()
+    finally:
+        base.parse_figure_source = original_parser
+
+    dot_source = base.BUILD_FIGURES / "figure_4.dot"
+    dot_source.write_text(FIGURE_4_DOT, encoding="utf-8")
+    for suffix in ("svg", "png", "pdf"):
+        output = base.BUILD_FIGURES / f"figure_4.{suffix}"
+        command = ["dot", f"-T{suffix}", str(dot_source), "-o", str(output)]
+        if suffix == "png":
+            command.insert(1, "-Gdpi=220")
+        subprocess.run(command, check=True)
+        shutil.copy2(output, base.DIST_FIGURES / output.name)
     trim_figure_pdf_margins()
 
 base.render_figures = render_tight_figures

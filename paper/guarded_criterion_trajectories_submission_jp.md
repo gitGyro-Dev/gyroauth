@@ -14,8 +14,6 @@
 
 **日英混在表記の方針:** GyroAuth固有の概念、状態名、評価応答および実装上の識別子は、原版・ソースコードとの対応と再現可能性を保つため英語表記を原則として維持する。一般的な説明は日本語で記述し、必要に応じて英語の専門用語を併記する。
 
----
-
 ## 1. はじめに
 
 認証は、端末、ネットワーク、場所、行動、運用Contextが時間とともに変化する環境で実行される。Digital authentication guidanceはAuthenticatorやAssuranceの要件を定めるが、時間を通じて取得される観測を将来の認証判断へどのように反映するかは、Application layerで別途設計しなければならない[1], [2]。固定されたCriterionは正当な変化を拒否し得る一方、無制約な適応は攻撃者による挙動の正常化を許し得る。
@@ -68,8 +66,6 @@ AUTH_STABLE + FREEZE
 4. 有限なCriterion Update State Machine。
 5. Candidate直接採用とGuard付き採用を比較する決定論的PoC。
 6. Security assumption、支持される主張、限界、非保証の明示。
-
----
 
 ## 2. 背景とRelated Work
 
@@ -125,8 +121,6 @@ Poisoning研究は、攻撃者がTraining dataやAdaptation dataを操作し、�
 
 > 本研究は、Adaptive authenticationやContinuous authenticationそのものの新規性を主張しない。提案の貢献は、Authentication Criterionの変更候補をGuard付きで追跡可能なTrajectoryとして表し、現在の認証判断とは独立して将来のCriterion変更を許可するCriterion Integrity modelにある。
 
----
-
 ## 3. 用語と適用範囲
 
 ### 3.1 Access Subject
@@ -169,8 +163,6 @@ Fixed Identity Profile
 
 **Criterion Integrity**は、Authentication Criterionとその更新過程が、Authentication Relationを評価する基準として、許容可能かつ追跡可能な状態を維持していることである。これは自己証明を意味せず、Protected Anchor、独立したEvidence、保持されたHistory、Verified rollback pointに依存する。
 
----
-
 ## 4. Threat Model
 
 本モデルの保護対象は次である。
@@ -192,8 +184,6 @@ Threat classには、Credential theft、Session hijacking、Relay attack、Gradu
 実行検証の中心はGradual region-expansion poisoningである。その他、Criterion translation、Evidence-priority poisoning、Challenge weakening、Context-rule poisoning、History-window poisoning、Rollback-link poisoning、Slow contraction、Response-policy poisoningをThreat Modelへ含める。
 
 最小のTrust assumptionは、少なくとも一つのIndependent Evidence source、Protected policy anchor、Intact audit linkage、Verified rollback pointが攻撃者の同時支配外に残ることである。すべてのEvidence、Anchor、History、Rollback pointが侵害された状況での識別や回復は保証しない。
-
----
 
 ## 5. Formal Security Model
 
@@ -285,8 +275,6 @@ REVIEW
 ROLLBACK
 ```
 
----
-
 ## 6. Criterion Update State Machine
 
 Criterion Stateは次である。
@@ -316,8 +304,6 @@ REVIEW != DEFER
 
 図1〜図6の再現用仕様は公開リポジトリの[Mermaid図仕様ファイル](https://github.com/gitGyro-Dev/gyroauth/blob/main/figures/guarded_criterion_trajectories_mermaid.md)に格納している。
 
----
-
 ## 7. PoC設計
 
 PoCは同一のCandidate generatorを用いる二つのModelを比較する。
@@ -342,15 +328,14 @@ Observation
 
 最小Criterion表現は次である。
 
-```text
-A_t = (
-  mu_t,
-  width_t,
-  provenance_requirement_t,
-  challenge_requirement_t,
-  rollback_integrity_t
-)
-```
+$
+A_t = \left(
+\begin{aligned}
+&\mu_t,\ \mathrm{width}_t,\ \mathrm{provenance\_requirement}_t,\\
+&\mathrm{challenge\_requirement}_t,\ \mathrm{rollback\_integrity}_t
+\end{aligned}
+\right)
+$
 
 実装はPython standard libraryのみを使用し、SyntheticかつDeterministicなInputを用いる。
 
@@ -381,8 +366,6 @@ N1: Legitimate New Device Transition
 P1: Gradual Region Expansion Poisoning
 C1: Single Evidence Source Compromise
 ```
-
----
 
 ## 8. 結果
 
@@ -468,8 +451,6 @@ Source integrityとCross-evidence consistencyが低いため、見かけ上強�
 
 実装した7件のAssertionはすべて成功した。
 
----
-
 ## 9. 考察
 
 中心的な結果は、Current Authentication Relationを継続する判断と、将来のAuthentication Criterionを変更する判断を、実行可能な別判断として表現できることである。`AUTH_STABLE + FREEZE`がその最小例である。
@@ -483,8 +464,6 @@ new normal automatically
 ```
 
 Criterion Integrityは自己証明ではない。ExternalまたはProtected referenceに依存する。また、Guardは単純なWeighted scoreではなく、Critical failureを平均値で相殺しない。
-
----
 
 ## 10. Security Claimsと限界
 
@@ -502,8 +481,6 @@ Criterion Integrityは自己証明ではない。ExternalまたはProtected refe
 
 PoCはSyntheticかつDeterministicであり、一次元Criterion、縮約Trajectory proxy、手動設定Thresholdを用いる。Real-world error rateやOperational costは未測定である。
 
----
-
 ## 11. 再現性と公開物
 
 実行例は次である。
@@ -516,8 +493,6 @@ python scripts/simulate_guarded_criterion_update.py \
 
 公開GyroAuthリポジトリ（https://github.com/gitGyro-Dev/gyroauth）には、Simulation source、Scenario input、結果概要（`results/criterion_update_summary.json`）、Formalization document、Figure sourceを含む。上のコマンドが生成する`results/criterion_update_results.json`は詳細結果の出力先であり、結果概要とは別ファイルである。
 
----
-
 ## 12. 結論
 
 適応型認証は正当な変化に対応できるCriterionを必要とするが、ObservationからCriterionへの直接取り込みはPoisoning surfaceを生む。本稿は、Criterion changeをGuard付きTrajectoryとして扱うGyroAuth拡張を提案した。Current Auth DecisionとFuture Criterion Update Responseを独立して選択し、Deterministic PoCにより、Bounded adaptation、実装したP1条件下でのPoisoning containment、Compromised-source updateの阻止を示した。
@@ -529,8 +504,6 @@ dynamic criterion
 !=
 unconstrained self-update
 ```
-
----
 
 ## 参考文献
 
@@ -562,8 +535,6 @@ unconstrained self-update
 
 
 [14] S. Kawakami, “Guarded Criterion Trajectories for Adaptive Authentication: Separating Current Access Decisions from Future Criterion Updates,” Jxiv, 2026年8月17日公開. DOI: 10.51094/jxiv.5671.
-
----
 
 ## AI支援ツールの使用
 

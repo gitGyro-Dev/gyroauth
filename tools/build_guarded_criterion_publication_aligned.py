@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 import sys
 
+import fitz
+
 import build_guarded_criterion_publication as base
 
 
@@ -96,7 +98,7 @@ def figure_markdown(number: int, lang: str) -> str:
     specs = {spec.number: spec for spec in base.parse_figure_source()}
     caption = specs[number].caption_en if lang == "en" else base.JP_CAPTIONS[number]
     caption = latex_escape(caption)
-    image = (base.BUILD_FIGURES / f"figure_{number}.pdf").resolve().as_posix()
+    image = (base.BUILD_FIGURES / f"figure_{number}_tight.pdf").resolve().as_posix()
     width = FIGURE_WIDTHS[number]
     label = f"fig:guarded-criterion-{number}"
     figure_word = "Figure" if lang == "en" else "図"
@@ -177,6 +179,33 @@ def normalize_with_ascii_scenario_labels(text: str, lang: str) -> str:
         )
     return normalized
 
+
+def trim_figure_pdf_margins() -> None:
+    for number in range(1, 7):
+        src = base.BUILD_FIGURES / f"figure_{number}.pdf"
+        dst = base.BUILD_FIGURES / f"figure_{number}_tight.pdf"
+        doc = fitz.open(src)
+        page = doc[0]
+        shapes = [fitz.Rect(item['rect']) for item in page.get_drawings()]
+        shapes = [r for r in shapes if not (r.width > page.rect.width * .95 and r.height > page.rect.height * .95)]
+        shapes += [fitz.Rect(b[:4]) for b in page.get_text('blocks') if b[6] == 0]
+        if not shapes:
+            raise RuntimeError(f"Figure {number}: no visible content for trimming")
+        bounds = shapes[0]
+        for rect in shapes[1:]:
+            bounds |= rect
+        bounds = fitz.Rect(bounds.x0 - 10, bounds.y0 - 10, bounds.x1 + 10, bounds.y1 + 10) & page.rect
+        page.set_cropbox(bounds)
+        doc.save(dst, garbage=4, deflate=True)
+        doc.close()
+
+_original_render = base.render_figures
+
+def render_tight_figures() -> None:
+    _original_render()
+    trim_figure_pdf_margins()
+
+base.render_figures = render_tight_figures
 
 base.parse_figure_source = parse_figure_source
 base.figure_markdown = figure_markdown

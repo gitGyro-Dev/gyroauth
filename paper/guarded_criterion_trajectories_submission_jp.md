@@ -302,7 +302,7 @@ DEFER != FREEZE
 REVIEW != DEFER
 ```
 
-図1〜図6の再現用仕様は公開リポジトリの[Mermaid図仕様ファイル](https://github.com/gitGyro-Dev/gyroauth/blob/main/figures/guarded_criterion_trajectories_mermaid.md)に格納している。
+図1〜図6の図仕様は公開リポジトリの[図仕様ファイル](https://github.com/gitGyro-Dev/gyroauth/blob/main/figures/guarded_criterion_trajectories_mermaid.md)に格納している。投稿用PDFの図4は、[PDF生成スクリプト](https://github.com/gitGyro-Dev/gyroauth/blob/main/tools/build_guarded_criterion_publication_aligned.py)に定義したGraphviz配置で描画する。
 
 ## 7. PoC設計
 
